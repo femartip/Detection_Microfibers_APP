@@ -1,0 +1,370 @@
+TracingAdapter(
+  original_name=TracingAdapter
+  (model): GeneralizedRCNN(
+    original_name=GeneralizedRCNN
+    (backbone): FPN(
+      original_name=FPN
+      (fpn_lateral2): Conv2d(original_name=Conv2d)
+      (fpn_output2): Conv2d(original_name=Conv2d)
+      (fpn_lateral3): Conv2d(original_name=Conv2d)
+      (fpn_output3): Conv2d(original_name=Conv2d)
+      (fpn_lateral4): Conv2d(original_name=Conv2d)
+      (fpn_output4): Conv2d(original_name=Conv2d)
+      (fpn_lateral5): Conv2d(original_name=Conv2d)
+      (fpn_output5): Conv2d(original_name=Conv2d)
+      (top_block): LastLevelMaxPool(original_name=LastLevelMaxPool)
+      (bottom_up): ResNet(
+        original_name=ResNet
+        (stem): BasicStem(
+          original_name=BasicStem
+          (conv1): Conv2d(
+            original_name=Conv2d
+            (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+          )
+        )
+        (res2): Sequential(
+          original_name=Sequential
+          (0): BottleneckBlock(
+            original_name=BottleneckBlock
+            (shortcut): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+          (1): BottleneckBlock(
+            original_name=BottleneckBlock
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+          (2): BottleneckBlock(
+            original_name=BottleneckBlock
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+        )
+        (res3): Sequential(
+          original_name=Sequential
+          (0): BottleneckBlock(
+            original_name=BottleneckBlock
+            (shortcut): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+          (1): BottleneckBlock(
+            original_name=BottleneckBlock
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+          (2): BottleneckBlock(
+            original_name=BottleneckBlock
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+          (3): BottleneckBlock(
+            original_name=BottleneckBlock
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+        )
+        (res4): Sequential(
+          original_name=Sequential
+          (0): BottleneckBlock(
+            original_name=BottleneckBlock
+            (shortcut): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+          (1): BottleneckBlock(
+            original_name=BottleneckBlock
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+          (2): BottleneckBlock(
+            original_name=BottleneckBlock
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+          (3): BottleneckBlock(
+            original_name=BottleneckBlock
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+          (4): BottleneckBlock(
+            original_name=BottleneckBlock
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+          (5): BottleneckBlock(
+            original_name=BottleneckBlock
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+        )
+        (res5): Sequential(
+          original_name=Sequential
+          (0): BottleneckBlock(
+            original_name=BottleneckBlock
+            (shortcut): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+          (1): BottleneckBlock(
+            original_name=BottleneckBlock
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+          (2): BottleneckBlock(
+            original_name=BottleneckBlock
+            (conv1): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv2): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+            (conv3): Conv2d(
+              original_name=Conv2d
+              (norm): FrozenBatchNorm2d(original_name=FrozenBatchNorm2d)
+            )
+          )
+        )
+      )
+    )
+    (proposal_generator): RPN(
+      original_name=RPN
+      (rpn_head): StandardRPNHead(
+        original_name=StandardRPNHead
+        (conv): Conv2d(
+          original_name=Conv2d
+          (activation): ReLU(original_name=ReLU)
+        )
+        (objectness_logits): Conv2d(original_name=Conv2d)
+        (anchor_deltas): Conv2d(original_name=Conv2d)
+      )
+      (anchor_generator): DefaultAnchorGenerator(
+        original_name=DefaultAnchorGenerator
+        (cell_anchors): BufferList(original_name=BufferList)
+      )
+    )
+    (roi_heads): StandardROIHeads(
+      original_name=StandardROIHeads
+      (box_pooler): ROIPooler(
+        original_name=ROIPooler
+        (level_poolers): ModuleList(
+          original_name=ModuleList
+          (0): ROIAlign(original_name=ROIAlign)
+          (1): ROIAlign(original_name=ROIAlign)
+          (2): ROIAlign(original_name=ROIAlign)
+          (3): ROIAlign(original_name=ROIAlign)
+        )
+      )
+      (box_head): FastRCNNConvFCHead(
+        original_name=FastRCNNConvFCHead
+        (flatten): Flatten(original_name=Flatten)
+        (fc1): Linear(original_name=Linear)
+        (fc_relu1): ReLU(original_name=ReLU)
+        (fc2): Linear(original_name=Linear)
+        (fc_relu2): ReLU(original_name=ReLU)
+      )
+      (box_predictor): FastRCNNOutputLayers(
+        original_name=FastRCNNOutputLayers
+        (cls_score): Linear(original_name=Linear)
+        (bbox_pred): Linear(original_name=Linear)
+      )
+      (mask_pooler): ROIPooler(
+        original_name=ROIPooler
+        (level_poolers): ModuleList(
+          original_name=ModuleList
+          (0): ROIAlign(original_name=ROIAlign)
+          (1): ROIAlign(original_name=ROIAlign)
+          (2): ROIAlign(original_name=ROIAlign)
+          (3): ROIAlign(original_name=ROIAlign)
+        )
+      )
+      (mask_head): MaskRCNNConvUpsampleHead(
+        original_name=MaskRCNNConvUpsampleHead
+        (mask_fcn1): Conv2d(
+          original_name=Conv2d
+          (activation): ReLU(original_name=ReLU)
+        )
+        (mask_fcn2): Conv2d(
+          original_name=Conv2d
+          (activation): ReLU(original_name=ReLU)
+        )
+        (mask_fcn3): Conv2d(
+          original_name=Conv2d
+          (activation): ReLU(original_name=ReLU)
+        )
+        (mask_fcn4): Conv2d(
+          original_name=Conv2d
+          (activation): ReLU(original_name=ReLU)
+        )
+        (deconv): ConvTranspose2d(original_name=ConvTranspose2d)
+        (deconv_relu): ReLU(original_name=ReLU)
+        (predictor): Conv2d(original_name=Conv2d)
+      )
+    )
+  )
+)
