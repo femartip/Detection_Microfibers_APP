@@ -1,19 +1,3 @@
-# ///////////////////////////////////////////////////////////////
-#
-# BY: WANDERSON M.PIMENTA
-# PROJECT MADE WITH: Qt Designer and PySide6
-# V: 1.0.0
-#
-# This project can be used freely for all uses, as long as they maintain the
-# respective credits only in the Python scripts, any information in the visual
-# interface (GUI) can be modified without any implication.
-#
-# There are limitations on Qt licenses if you want to use your products
-# commercially, I recommend reading them on the official website:
-# https://doc.qt.io/qtforpython/licenses.html
-#
-# ///////////////////////////////////////////////////////////////
-
 import sys
 import os
 from os.path import basename
@@ -68,8 +52,12 @@ class MainWindow(QMainWindow):
 
         # QTableWidget PARAMETERS
         # ///////////////////////////////////////////////////////////////
-        widgets.tableWidget.setHorizontalHeaderLabels(["ID", "IMAGENES","Nº FIBRAS", "PROB. DE ACIERTO"])
+        widgets.tableWidget.setColumnCount(6)
+        widgets.tableWidget.setHorizontalHeaderLabels(["ID", "IMAGENES","Nº FIBRAS", "PROB. DE ACIERTO", "TAMAÑO", "COLOR"])
 
+        # COMBO BOX
+        widgets.comboBox_filtro.addItem("Filtro de Vidrio")
+        widgets.comboBox_escala.addItems(["350","500","750", "1000"])
         # BUTTONS CLICK
         # ///////////////////////////////////////////////////////////////
 
@@ -174,6 +162,8 @@ class MainWindow(QMainWindow):
             table.setItem(i, 1, QTableWidgetItem(basename(path)))
             table.setItem(i, 2, QTableWidgetItem(str(data["Fibres_detected"])))
             table.setItem(i, 3, QTableWidgetItem(str(data["Scores"])))
+            table.setItem(i, 4, QTableWidgetItem(str(data["Size"])))
+            table.setItem(i, 5, QTableWidgetItem(str(data["Color"])))
         
         print("Table updated")
 
@@ -216,13 +206,14 @@ class MainWindow(QMainWindow):
                 total_fibre_count = 0
                 for i, path in enumerate(image_path):
                     QApplication.processEvents() # To prevent the GUI from freezing
-                    result_img, scores = process_image(path)
-                    IMAGES[path] = {"Image":result_img,"Fibres_detected": len(scores), "Scores":scores}
+                    result_img, mask, scores, size, color = process_image(path, widgets.comboBox_filtro.currentText(), widgets.comboBox_escala.currentText())
+                    IMAGES[path] = {"Image":result_img,"Mask": mask,"Fibres_detected": len(scores), "Scores":scores, "Size":size, "Color":color}
                     total_fibre_count += len(scores)
                     vbox = QVBoxLayout()
                     height, width, channel = result_img.shape
                     bytesPerLine = 3 * width
-                    qImg = QImage(result_img.data, width, height, bytesPerLine, QImage.Format_RGB888).rgbSwapped()
+                    #image_mask_overlay = cv2.addWeighted(result_img, 0.7, mask, 0.3, 0)
+                    qImg = QImage(result_img, width, height, bytesPerLine, QImage.Format_RGB888).rgbSwapped()
                     pixmap = QPixmap.fromImage(qImg)
                     pixmap = pixmap.scaled(image_size, image_size, Qt.AspectRatioMode.KeepAspectRatio)
                     label = QLabel()

@@ -1700,7 +1700,7 @@ p, li { white-space: pre-wrap; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>2</number>
+                      <number>0</number>
                      </property>
                      <widget class="QWidget" name="home">
                       <property name="font">
@@ -1721,65 +1721,6 @@ p, li { white-space: pre-wrap; }
                        <string notr="true"/>
                       </property>
                       <layout class="QGridLayout" name="gridLayout">
-                       <item row="0" column="0">
-                        <layout class="QGridLayout" name="images_tools_grid_layout">
-                         <property name="leftMargin">
-                          <number>10</number>
-                         </property>
-                         <property name="topMargin">
-                          <number>10</number>
-                         </property>
-                         <property name="rightMargin">
-                          <number>10</number>
-                         </property>
-                         <property name="bottomMargin">
-                          <number>10</number>
-                         </property>
-                         <property name="spacing">
-                          <number>0</number>
-                         </property>
-                         <item row="1" column="0" alignment="Qt::AlignLeft|Qt::AlignTop">
-                          <widget class="QLabel" name="images_title_label">
-                           <property name="styleSheet">
-                            <string notr="true">font:20px</string>
-                           </property>
-                           <property name="text">
-                            <string>Cargar Imagenes:</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="3" column="0">
-                          <widget class="QPushButton" name="bttn_import_images">
-                           <property name="cursor">
-                            <cursorShape>PointingHandCursor</cursorShape>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">image: url(:/icons/images/icons/cil-save.png);</string>
-                           </property>
-                           <property name="text">
-                            <string/>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="1" column="1" alignment="Qt::AlignLeft|Qt::AlignTop">
-                          <widget class="QLabel" name="label">
-                           <property name="styleSheet">
-                            <string notr="true">font:20px</string>
-                           </property>
-                           <property name="text">
-                            <string>Numero de imagenes por fila:</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="3" column="1">
-                          <widget class="QSpinBox" name="spinbox_n_imagenes">
-                           <property name="cursor">
-                            <cursorShape>PointingHandCursor</cursorShape>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
                        <item row="1" column="0">
                         <widget class="QScrollArea" name="scroll_area_for_images">
                          <property name="widgetResizable">
@@ -1791,7 +1732,7 @@ p, li { white-space: pre-wrap; }
                             <x>0</x>
                             <y>0</y>
                             <width>1158</width>
-                            <height>508</height>
+                            <height>496</height>
                            </rect>
                           </property>
                           <widget class="QWidget" name="gridLayoutWidget">
@@ -1814,6 +1755,94 @@ p, li { white-space: pre-wrap; }
                           </widget>
                          </widget>
                         </widget>
+                       </item>
+                       <item row="0" column="0">
+                        <layout class="QGridLayout" name="images_tools_grid_layout">
+                         <property name="leftMargin">
+                          <number>10</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>10</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>10</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>10</number>
+                         </property>
+                         <property name="horizontalSpacing">
+                          <number>50</number>
+                         </property>
+                         <property name="verticalSpacing">
+                          <number>0</number>
+                         </property>
+                         <item row="4" column="0">
+                          <widget class="QPushButton" name="bttn_import_images">
+                           <property name="cursor">
+                            <cursorShape>PointingHandCursor</cursorShape>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">image: url(:/icons/images/icons/cil-save.png);</string>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="0" alignment="Qt::AlignLeft|Qt::AlignTop">
+                          <widget class="QLabel" name="images_title_label">
+                           <property name="styleSheet">
+                            <string notr="true">font:20px</string>
+                           </property>
+                           <property name="text">
+                            <string>Cargar Imagenes:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="1" alignment="Qt::AlignLeft|Qt::AlignTop">
+                          <widget class="QLabel" name="label">
+                           <property name="styleSheet">
+                            <string notr="true">font:20px</string>
+                           </property>
+                           <property name="text">
+                            <string>Numero de imagenes por fila:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="4" column="2">
+                          <widget class="QComboBox" name="comboBox_filtro"/>
+                         </item>
+                         <item row="4" column="1">
+                          <widget class="QSpinBox" name="spinbox_n_imagenes">
+                           <property name="cursor">
+                            <cursorShape>PointingHandCursor</cursorShape>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="2">
+                          <widget class="QLabel" name="label_2">
+                           <property name="styleSheet">
+                            <string notr="true">font:20px</string>
+                           </property>
+                           <property name="text">
+                            <string>Tipo de Filtro:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="3">
+                          <widget class="QLabel" name="label_3">
+                           <property name="styleSheet">
+                            <string notr="true">font:20px</string>
+                           </property>
+                           <property name="text">
+                            <string>Escala de las Imagenes:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="4" column="3">
+                          <widget class="QComboBox" name="comboBox_escala"/>
+                         </item>
+                        </layout>
                        </item>
                       </layout>
                      </widget>
@@ -2035,7 +2064,7 @@ p, li { white-space: pre-wrap; }
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>1128</width>
+                                 <width>218</width>
                                  <height>218</height>
                                 </rect>
                                </property>
@@ -2312,7 +2341,7 @@ p, li { white-space: pre-wrap; }
                              <bool>false</bool>
                             </property>
                             <attribute name="horizontalHeaderVisible">
-                             <bool>true</bool>
+                             <bool>false</bool>
                             </attribute>
                             <attribute name="horizontalHeaderCascadingSectionResizes">
                              <bool>false</bool>
@@ -2748,7 +2777,7 @@ p, li { white-space: pre-wrap; }
                 <item>
                  <widget class="QLabel" name="version">
                   <property name="text">
-                   <string>v0.0.1</string>
+                   <string>v0.0.2</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

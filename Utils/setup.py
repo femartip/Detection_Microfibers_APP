@@ -15,17 +15,13 @@ if system == "linux":
 elif system == 'win32':
     PyInstaller.__main__.run([
         'main.py',
-        '--distpath ./windows_build/dist',
-        '--workpath ./windows_build/build',
+        '--distpath=./windows_build/dist',
+        '--workpath=./windows_build/build',
         '--noconfirm',
-        '--specpath ./windows_build',
-        '--name Detector_fibras',
-        '--windowed', 
-        '--collect-all torch' ,
-        '--collect-all torchvision' , 
-        '--collect-all libtorch', 
-        '--collect-all torchvision', 
-        '--collect-all numpy', 
-        '--collect-all opencv-python'
+        '--specpath=./windows_build',
+        '--name=Detector_fibras',
+        '--windowed',
+        '--add-data=../models/model.ts:../models',
+        '-i=../images/icon.ico'
     ])
     #pyinstaller main.py --distpath ./windows_build/dist --workpath ./windows_build/build --noconfirm --specpath ./windows_build --name Detector_fibras --windowed --add-data ../modules/*.py:./modules/ --add-data ../models/*:./models --collect-all torch --collect-all torchvision --collect-all libtorch --collect-all torchvision --collect-all numpy --collect-all opencv-python

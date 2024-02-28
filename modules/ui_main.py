@@ -15,11 +15,12 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplication, QFrame,
-    QGridLayout, QHBoxLayout, QHeaderView, QLabel,
-    QMainWindow, QPlainTextEdit, QPushButton, QScrollArea,
-    QSizePolicy, QSpinBox, QStackedWidget, QTableWidget,
-    QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplication, QComboBox,
+    QFrame, QGridLayout, QHBoxLayout, QHeaderView,
+    QLabel, QMainWindow, QPlainTextEdit, QPushButton,
+    QScrollArea, QSizePolicy, QSpinBox, QStackedWidget,
+    QTableWidget, QTableWidgetItem, QTextEdit, QVBoxLayout,
+    QWidget)
 from .resources_rc import *
 
 class Ui_MainWindow(object):
@@ -989,44 +990,12 @@ class Ui_MainWindow(object):
         self.images.setStyleSheet(u"")
         self.gridLayout = QGridLayout(self.images)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.images_tools_grid_layout = QGridLayout()
-        self.images_tools_grid_layout.setSpacing(0)
-        self.images_tools_grid_layout.setObjectName(u"images_tools_grid_layout")
-        self.images_tools_grid_layout.setContentsMargins(10, 10, 10, 10)
-        self.images_title_label = QLabel(self.images)
-        self.images_title_label.setObjectName(u"images_title_label")
-        self.images_title_label.setStyleSheet(u"font:20px")
-
-        self.images_tools_grid_layout.addWidget(self.images_title_label, 1, 0, 1, 1, Qt.AlignLeft|Qt.AlignTop)
-
-        self.bttn_import_images = QPushButton(self.images)
-        self.bttn_import_images.setObjectName(u"bttn_import_images")
-        self.bttn_import_images.setCursor(QCursor(Qt.PointingHandCursor))
-        self.bttn_import_images.setStyleSheet(u"image: url(:/icons/images/icons/cil-save.png);")
-
-        self.images_tools_grid_layout.addWidget(self.bttn_import_images, 3, 0, 1, 1)
-
-        self.label = QLabel(self.images)
-        self.label.setObjectName(u"label")
-        self.label.setStyleSheet(u"font:20px")
-
-        self.images_tools_grid_layout.addWidget(self.label, 1, 1, 1, 1, Qt.AlignLeft|Qt.AlignTop)
-
-        self.spinbox_n_imagenes = QSpinBox(self.images)
-        self.spinbox_n_imagenes.setObjectName(u"spinbox_n_imagenes")
-        self.spinbox_n_imagenes.setCursor(QCursor(Qt.PointingHandCursor))
-
-        self.images_tools_grid_layout.addWidget(self.spinbox_n_imagenes, 3, 1, 1, 1)
-
-
-        self.gridLayout.addLayout(self.images_tools_grid_layout, 0, 0, 1, 1)
-
         self.scroll_area_for_images = QScrollArea(self.images)
         self.scroll_area_for_images.setObjectName(u"scroll_area_for_images")
         self.scroll_area_for_images.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1158, 508))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1158, 496))
         self.gridLayoutWidget = QWidget(self.scrollAreaWidgetContents_2)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
         self.gridLayoutWidget.setGeometry(QRect(9, -1, 1171, 511))
@@ -1036,6 +1005,61 @@ class Ui_MainWindow(object):
         self.scroll_area_for_images.setWidget(self.scrollAreaWidgetContents_2)
 
         self.gridLayout.addWidget(self.scroll_area_for_images, 1, 0, 1, 1)
+
+        self.images_tools_grid_layout = QGridLayout()
+        self.images_tools_grid_layout.setObjectName(u"images_tools_grid_layout")
+        self.images_tools_grid_layout.setHorizontalSpacing(50)
+        self.images_tools_grid_layout.setVerticalSpacing(0)
+        self.images_tools_grid_layout.setContentsMargins(10, 10, 10, 10)
+        self.bttn_import_images = QPushButton(self.images)
+        self.bttn_import_images.setObjectName(u"bttn_import_images")
+        self.bttn_import_images.setCursor(QCursor(Qt.PointingHandCursor))
+        self.bttn_import_images.setStyleSheet(u"image: url(:/icons/images/icons/cil-save.png);")
+
+        self.images_tools_grid_layout.addWidget(self.bttn_import_images, 4, 0, 1, 1)
+
+        self.images_title_label = QLabel(self.images)
+        self.images_title_label.setObjectName(u"images_title_label")
+        self.images_title_label.setStyleSheet(u"font:20px")
+
+        self.images_tools_grid_layout.addWidget(self.images_title_label, 2, 0, 1, 1, Qt.AlignLeft|Qt.AlignTop)
+
+        self.label = QLabel(self.images)
+        self.label.setObjectName(u"label")
+        self.label.setStyleSheet(u"font:20px")
+
+        self.images_tools_grid_layout.addWidget(self.label, 2, 1, 1, 1, Qt.AlignLeft|Qt.AlignTop)
+
+        self.comboBox_filtro = QComboBox(self.images)
+        self.comboBox_filtro.setObjectName(u"comboBox_filtro")
+
+        self.images_tools_grid_layout.addWidget(self.comboBox_filtro, 4, 2, 1, 1)
+
+        self.spinbox_n_imagenes = QSpinBox(self.images)
+        self.spinbox_n_imagenes.setObjectName(u"spinbox_n_imagenes")
+        self.spinbox_n_imagenes.setCursor(QCursor(Qt.PointingHandCursor))
+
+        self.images_tools_grid_layout.addWidget(self.spinbox_n_imagenes, 4, 1, 1, 1)
+
+        self.label_2 = QLabel(self.images)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setStyleSheet(u"font:20px")
+
+        self.images_tools_grid_layout.addWidget(self.label_2, 2, 2, 1, 1)
+
+        self.label_3 = QLabel(self.images)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setStyleSheet(u"font:20px")
+
+        self.images_tools_grid_layout.addWidget(self.label_3, 2, 3, 1, 1)
+
+        self.comboBox_escala = QComboBox(self.images)
+        self.comboBox_escala.setObjectName(u"comboBox_escala")
+
+        self.images_tools_grid_layout.addWidget(self.comboBox_escala, 4, 3, 1, 1)
+
+
+        self.gridLayout.addLayout(self.images_tools_grid_layout, 0, 0, 1, 1)
 
         self.stackedWidget.addWidget(self.images)
         self.dashboard = QWidget()
@@ -1139,7 +1163,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 1128, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 218, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -1276,7 +1300,7 @@ class Ui_MainWindow(object):
         self.tableWidget.setShowGrid(True)
         self.tableWidget.setGridStyle(Qt.SolidLine)
         self.tableWidget.setSortingEnabled(False)
-        self.tableWidget.horizontalHeader().setVisible(True)
+        self.tableWidget.horizontalHeader().setVisible(False)
         self.tableWidget.horizontalHeader().setCascadingSectionResizes(False)
         self.tableWidget.horizontalHeader().setDefaultSectionSize(200)
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
@@ -1425,7 +1449,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1477,9 +1501,11 @@ class Ui_MainWindow(object):
         self.closeAppBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Close", None))
 #endif // QT_CONFIG(tooltip)
         self.closeAppBtn.setText("")
-        self.images_title_label.setText(QCoreApplication.translate("MainWindow", u"Cargar Imagenes:", None))
         self.bttn_import_images.setText("")
+        self.images_title_label.setText(QCoreApplication.translate("MainWindow", u"Cargar Imagenes:", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Numero de imagenes por fila:", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Tipo de Filtro:", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Escala de las Imagenes:", None))
         self.labelBoxBlenderInstalation.setText(QCoreApplication.translate("MainWindow", u"Numero de fibras detectadas:", None))
         self.n_fibras_detectadas.setText(QCoreApplication.translate("MainWindow", u"0", None))
         self.plainTextEdit.setPlainText(QCoreApplication.translate("MainWindow", u"FILTROS", None))
@@ -1531,6 +1557,6 @@ class Ui_MainWindow(object):
         self.btn_save_images.setText(QCoreApplication.translate("MainWindow", u"Exportar Imagenes", None))
         self.btn_export_csv.setText(QCoreApplication.translate("MainWindow", u"Exportar Datos a CSV", None))
         self.btn_logout.setText(QCoreApplication.translate("MainWindow", u"Logout", None))
-        self.version.setText(QCoreApplication.translate("MainWindow", u"v0.0.1", None))
+        self.version.setText(QCoreApplication.translate("MainWindow", u"v0.0.2", None))
     # retranslateUi
 
