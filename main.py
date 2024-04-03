@@ -1,7 +1,6 @@
 import sys
 import os
 from os.path import basename
-import cv2
 import csv
 
 from PySide6 import QtCore
@@ -56,8 +55,9 @@ class MainWindow(QMainWindow):
         widgets.tableWidget.setHorizontalHeaderLabels(["ID", "IMAGENES","Nº FIBRAS", "PROB. DE ACIERTO", "TAMAÑO", "COLOR"])
 
         # COMBO BOX
-        widgets.comboBox_filtro.addItem("Filtro de Vidrio")
+        widgets.comboBox_filtro.addItems(["Filtro de Vidrio","Filtro de CA"])
         widgets.comboBox_escala.addItems(["350","500","750", "1000"])
+        widgets.comboBox_escala.setCurrentIndex(2)
         # BUTTONS CLICK
         # ///////////////////////////////////////////////////////////////
 
@@ -81,8 +81,8 @@ class MainWindow(QMainWindow):
 
         # IMAGE WIDGET BUTTONS
         widgets.bttn_import_images.clicked.connect(self.import_images)
-        widgets.spinbox_n_imagenes.valueChanged.connect(lambda: UIFunctions.update_image_widget(self, widgets.spinbox_n_imagenes.value(), widgets.scroll_area_for_images, widgets.grid_layout_images, widgets.scrollAreaWidgetContents_2))
-
+        widgets.spinbox_n_imagenes.valueChanged.connect(lambda: UIFunctions.update_image_widget(self, widgets.spinbox_n_imagenes.value(), widgets, IMAGES))
+        widgets.spinbox_n_imagenes.setEnabled(False)
         # RIGHT SIDE SETTINGS MENU BUTTONS
         widgets.btn_logout.setVisible(False)
         widgets.btn_save_images.setDisabled(True)
@@ -193,6 +193,8 @@ class MainWindow(QMainWindow):
             if image_path:
                 loading_window = Load_Window(self)
                 loading_window.show()
+                loading_window.set_progress(0)
+                QApplication.processEvents()
                 global IMAGES
                 IMAGES.clear()
                 scroll_area = widgets.scroll_area_for_images
@@ -206,13 +208,17 @@ class MainWindow(QMainWindow):
                 total_fibre_count = 0
                 for i, path in enumerate(image_path):
                     QApplication.processEvents() # To prevent the GUI from freezing
-                    result_img, mask, scores, size, color = process_image(path, widgets.comboBox_filtro.currentText(), widgets.comboBox_escala.currentText())
+                    try:
+                        result_img, mask, scores, size, color = process_image(path, widgets.comboBox_filtro.currentText(), widgets.comboBox_escala.currentText())
+                    except Exception as e:
+                        print(e)
+                        print("Error processing image")
+                        continue
                     IMAGES[path] = {"Image":result_img,"Mask": mask,"Fibres_detected": len(scores), "Scores":scores, "Size":size, "Color":color}
                     total_fibre_count += len(scores)
                     vbox = QVBoxLayout()
                     height, width, channel = result_img.shape
                     bytesPerLine = 3 * width
-                    #image_mask_overlay = cv2.addWeighted(result_img, 0.7, mask, 0.3, 0)
                     qImg = QImage(result_img, width, height, bytesPerLine, QImage.Format_RGB888).rgbSwapped()
                     pixmap = QPixmap.fromImage(qImg)
                     pixmap = pixmap.scaled(image_size, image_size, Qt.AspectRatioMode.KeepAspectRatio)
@@ -227,6 +233,7 @@ class MainWindow(QMainWindow):
                         row = 0
                         col = 0
                     image_layout.addLayout(vbox, row, col)
+                    loading_window.set_progress((i+1)/len(image_path)*100)
                 
                 self.update_table()
                 widgets.n_fibras_detectadas.setText(str(total_fibre_count))
@@ -239,7 +246,7 @@ class MainWindow(QMainWindow):
                 if len(image_path) == 1:
                     widgets.spinbox_n_imagenes.setValue(1)
                 else:
-                    widgets.spinbox_n_imagenes.setValue(1) #Should be 2
+                    widgets.spinbox_n_imagenes.setValue(2)
                 widgets.spinbox_n_imagenes.blockSignals(False)
                 widgets.spinbox_n_imagenes.setMinimum(1)
                 widgets.btn_save_images.setEnabled(True)
@@ -249,38 +256,60 @@ class MainWindow(QMainWindow):
                 print("Images imported")
 
     # CHANGES THE NUMBER OF IMAGES DISPLAYED IN A ROW
-    def update_image_widget(self, n_images, scroll_area, image_layout, image_widget):
+    def update_image_widget(self, n_images, widgets, images):
         print(f"Updating image widget to display {n_images} images")
-        print(image_layout)
-        for i in reversed(range(image_layout.count())):
-            image_layout.itemAt(i).widget().setParent(None)
-        for i, image in enumerate(IMAGES):
-            row = i // n_images + 1  # +1 to account for the spin box
+        grid_layout = widgets.grid_layout_images
+        image_widget = widgets.scrollAreaWidgetContents_2
+        scroll_area = widgets.scroll_area_for_images
+        print(f"Grid layout {grid_layout}")
+        current_columns = grid_layout.columnCount()
+        print(f"Current columns {current_columns}")        
+        clearLayout(grid_layout)
+        
+        for i, image in enumerate(images):
+            row = i // n_images
             col = i % n_images
-            label = QLabel(self)
-            label.setPixmap(QPixmap(image["Image"]))
-            image_layout.addWidget(label, row, col)
-        image_widget.setLayout(image_layout)
+            vbox = QVBoxLayout()
+            height, width, channel = images[image]["Image"].shape
+            bytesPerLine = 3 * width
+            qImg = QImage(images[image]["Image"], width, height, bytesPerLine, QImage.Format_RGB888).rgbSwapped()
+            pixmap = QPixmap.fromImage(qImg)
+            pixmap = pixmap.scaled(500, 500, Qt.AspectRatioMode.KeepAspectRatio)
+            label = QLabel()
+            label.setPixmap(pixmap)
+            vbox.addWidget(label)
+            file_name_label = QLabel(basename(image))
+            vbox.addWidget(file_name_label)
+            grid_layout.addItem(vbox, row, col)
+        image_widget.setLayout(grid_layout)
         scroll_area.setWidget(image_widget)
+        widgets.scroll_area_for_images
+        print("Image widget updated")
+
     
     # SAVES PROCESSED IMAGES IN GIVEN DIRECTORY
     def save_images(self, images):
         print("Saving images")
-        file_dialog = QFileDialog()
-        if file_dialog.exec_():
-            folder_path = file_dialog.getExistingDirectory(self)
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        folder_path = QFileDialog.getExistingDirectory(self, "Select Directory")
+        if folder_path:
             for image in images:
                 path= image.split("/")[-1]
-                cv2.imwrite(os.path.join(folder_path,path), images[image]["Image"])
+                image_data = images[image]["Image"]
+                #cv2.imwrite(os.path.join(folder_path,path), images[image]["Image"])
+                writer = QImageWriter(os.path.join(folder_path,path))
+                image_data_qt = QImage(image_data.data, image_data.shape[1], image_data.shape[0], QImage.Format_RGB888).rgbSwapped()
+                writer.write(image_data_qt)
             print("Images saved in " + folder_path)
 
     # EXPORTS TABLE TO CSV FORMAT
     def export_csv(self, table):
-        print(table)  
         print("Exporting to csv")
-        file_dialog = QFileDialog()
-        if file_dialog.exec_():
-            folder_path = file_dialog.getExistingDirectory(self)
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        folder_path = QFileDialog.getExistingDirectory(self, "Select Directory")
+        if folder_path:
             file_path = os.path.join(folder_path, "csv_images.csv")
             with open(file_path, 'w') as stream:
                     writer = csv.writer(stream)
@@ -307,16 +336,26 @@ class Load_Window(QDialog):
     def __init__(self, parent=None):
         super(Load_Window, self).__init__(parent)
         self.setModal(True)
-        self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.FramelessWindowHint)
+        self.setWindowFlags(Qt.Window | Qt.CustomizeWindowHint | Qt.WindowStaysOnTopHint)
         self.setFixedSize(200, 100)
         p = self.palette()
         p.setColor(self.backgroundRole(), QColor(33, 37, 43)) 
         self.setPalette(p)
+        self.progress = QProgressBar(self)
+        self.progress.setMaximum(100)
+        self.progress.setStyleSheet("QProgressBar { border: 2px solid grey; border-radius: 5px; text-align: center; background-color: #21252b;} QProgressBar::chunk { background-color: '#FF79C6'; width: 20px; }")
         layout = QVBoxLayout()
         label = QLabel("Loading...")
         label.setStyleSheet("color:white")
         layout.addWidget(label)
+        layout.addWidget(self.progress)
         self.setLayout(layout)
+        qr = self.frameGeometry()
+        cp = QGuiApplication.primaryScreen().availableGeometry().center()
+        qr.moveCenter(cp)
+
+    def set_progress(self, value):
+        self.progress.setValue(value)
 
                 
 

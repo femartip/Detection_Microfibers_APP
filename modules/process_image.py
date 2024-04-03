@@ -3,7 +3,7 @@ import torchvision
 import numpy as np
 import cv2
 from skimage.morphology import skeletonize
-
+import time
 
 TRESHOLD = 0.5
 
@@ -36,7 +36,7 @@ def mask_size(mask):
     return skeleton, distance
 
 def buld_mask(masks, boxes):
-    image_mask = np.zeros((750,1000), dtype=np.uint8)
+    image_mask = np.zeros((IMAGE_SIZE[1],IMAGE_SIZE[0]), dtype=np.uint8)
     for i,mask in enumerate(masks):
         image_mask[int(boxes[i][1]):int(boxes[i][3]), int(boxes[i][0]):int(boxes[i][2])] = mask
     image_mask = cv2.cvtColor(image_mask, cv2.COLOR_GRAY2BGR)
@@ -49,12 +49,16 @@ def fit_mask(mask, box):
 # Function that merges the boxes and masks that intersect. This is done to avoid multiple detections of the same object
 def merge_boxes_and_masks(pred_boxes, pred_masks):
     sorted_indices = sorted(range(len(pred_boxes)), key=lambda i: pred_boxes[i][0])
+    
     pred_boxes = [pred_boxes[i] for i in sorted_indices]
     pred_masks = [pred_masks[i] for i in sorted_indices]
 
     # Initialize the list of merged boxes and masks
-    merged_boxes = [pred_boxes[0]]
-    merged_masks = [pred_masks[0]]
+    merged_boxes = []
+    merged_masks = []
+
+    merged_boxes.append(pred_boxes[0])
+    merged_masks.append(pred_masks[0])
 
     for current_box, current_mask in zip(pred_boxes[1:], pred_masks[1:]):
         # Get the last box and mask in the merged_boxes and merged_masks lists
@@ -62,9 +66,11 @@ def merge_boxes_and_masks(pred_boxes, pred_masks):
         last_mask = merged_masks[-1]
 
         # If the current box intersects with the last box, merge them
-        if not (last_box[2] < current_box[0] or last_box[3] < current_box[1]):
-            merged_box = (min(last_box[0], current_box[0]), min(last_box[1], current_box[1]), max(last_box[2], current_box[2]), max(last_box[3], current_box[3]))
-            merged_mask = np.logical_or(last_mask, current_mask)
+        if not(last_box[2] < current_box[0] or last_box[3] < current_box[1]):
+            merged_box = [min(last_box[0], current_box[0]), min(last_box[1], current_box[1]), max(last_box[2], current_box[2]), max(last_box[3], current_box[3])]
+            
+            merged_mask = np.logical_or(last_mask, current_mask) #Returns boolean array
+            merged_mask = merged_mask.astype(np.uint8) * 255 #Convert to binary mask
 
             merged_boxes[-1] = merged_box
             merged_masks[-1] = merged_mask
@@ -85,10 +91,15 @@ def apply_treshold(output):
 
 # Function that loads the model and makes the inference on the image. It returns the bounding boxes, masks and scores
 def inference(data):
-    model = torch.jit.load("./models/model.ts", map_location="cpu")
+    start_time = time.time()
+    try:
+        model = torch.jit.load(MODEL, map_location="cpu")
+    except UserWarning:
+        pass
     model.eval()
     input_data = torch.tensor(data).permute(2, 0, 1).float()
     output = model(input_data)
+    print("Model loaded in: ", time.time()-start_time)
     filtered_output = apply_treshold(output)
     bbox = filtered_output[0].detach().numpy()
     masks = (filtered_output[2].detach().numpy() > 0.5).astype(np.uint8) * 255
@@ -97,25 +108,40 @@ def inference(data):
 
 # Resize the image to the input size of the model
 def preprocess_image(data):
-    data = cv2.resize(data, (1000, 750))
+    data = cv2.resize(data, IMAGE_SIZE)
     return data
 
 # Functions that handles the detection, this function is called from the main.py file
 def process_image(path, model_type, scale):
+    global MODEL
+    global IMAGE_SIZE
+
+    if model_type == "Filtro de Vidrio":
+        MODEL = "models/glass_model.ts"
+        IMAGE_SIZE = (1000, 750)
+    elif model_type == "Filtro de CA":
+        MODEL = "models/ca_model.ts"
+        IMAGE_SIZE = (1280, 720)
+    else:
+        print("Modelo no encontrado")
+        return None, None, None, None, None
+    
     data_orig = cv2.imread(path)
     data = preprocess_image(data_orig)
     bbox, masks, scores = inference(data)
+    
     if len(bbox) == 0:
-        return data, scores
+        return data, None, scores, None, None
     bbox, masks = merge_boxes_and_masks(bbox, masks)
     
     colors = []
     sizes = []
-    empty_mask = np.zeros((750,1000), dtype=np.uint8)
+    empty_mask = np.zeros((IMAGE_SIZE[1],IMAGE_SIZE[0]), dtype=np.uint8)
     for i in range(len(bbox)):
         masks[i] = fit_mask(masks[i], bbox[i])
         skel, ms = mask_size(masks[i])
         roi = empty_mask.copy()
+        
         roi[int(bbox[i][1]):int(bbox[i][3]), int(bbox[i][0]):int(bbox[i][2])] = skel
         color = extract_color(data, roi)
         colors.append(color)
