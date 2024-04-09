@@ -2,16 +2,17 @@
 
 ## Project Description
 This project contains an application that is designed to detect micro fibers in sewage. 
+
 Structure:  
-  Utils - 
-  images - Containes all images used in the app
-  models - Torchscript file for bothe CA and Glass models
-  modules - code file
-  test_data - Contains sample images extracted from glass filter.
-  themes - app stylesheet
-  widgets - 
-  main.py - main file of app
-  main.ui - ui file for qtdesigner 
+- Utils - 
+- images - Containes all images used in the app
+- models - Torchscript file for bothe CA and Glass models
+- modules - code file
+- test_data - Contains sample images extracted from glass filter.
+- themes - app stylesheet
+- widgets - 
+- main.py - main file of app
+- main.ui - ui file for qtdesigner 
 
 ## Table of Contents
 1. Installation
