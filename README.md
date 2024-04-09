@@ -15,7 +15,7 @@ This project contains an application that is designed to detect micro fibers in 
 ### Source Code
 
 #### Prerequisites
-- Python 3.8 or higher
+- Python 3
 - OpenCV
 - PySide6
 - PyQt6
@@ -37,6 +37,9 @@ Note that Windows Defender may block the application from running. To run the ap
 
 ## Usage
 
+![image](https://github.com/femartip/Detection_Microfibers_APP/assets/99536660/81a4f3b7-5168-4983-8f10-b1a74572c697)
+![image](https://github.com/femartip/Detection_Microfibers_APP/assets/99536660/40a2f57d-9ecd-44fa-8a2d-1fed463c2fa8)
+![image](https://github.com/femartip/Detection_Microfibers_APP/assets/99536660/6c09ec44-6b27-4db6-b2e5-539f861d8c17)
 
 ## Features
 :heavy_check_mark: Implemented features:
@@ -56,6 +59,7 @@ Note that Windows Defender may block the application from running. To run the ap
 :x: Features to be implemented:
 - Linux build
 - Mac build
+- Home page explanation of app
 - Export images at original resolution
 - Make segmentation and bounding box toggleable
 
