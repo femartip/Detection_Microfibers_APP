@@ -52,7 +52,8 @@ class MainWindow(QMainWindow):
         # QTableWidget PARAMETERS
         # ///////////////////////////////////////////////////////////////
         widgets.tableWidget.setColumnCount(6)
-        widgets.tableWidget.setHorizontalHeaderLabels(["ID", "IMAGENES","Nº FIBRAS", "PROB. DE ACIERTO", "TAMAÑO", "COLOR"])
+        #widgets.tableWidget.setHorizontalHeaderLabels(["ID", "IMAGENES","Nº FIBRAS", "PROB. DE ACIERTO", "TAMAÑO", "COLOR"])
+        
 
         # COMBO BOX
         widgets.comboBox_filtro.addItems(["Filtro de Vidrio","Filtro de CA"])

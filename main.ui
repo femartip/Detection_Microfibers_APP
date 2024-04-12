@@ -1700,7 +1700,7 @@ p, li { white-space: pre-wrap; }
                       <string notr="true">background: transparent;</string>
                      </property>
                      <property name="currentIndex">
-                      <number>0</number>
+                      <number>2</number>
                      </property>
                      <widget class="QWidget" name="home">
                       <property name="font">
@@ -1731,8 +1731,8 @@ p, li { white-space: pre-wrap; }
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>1158</width>
-                            <height>496</height>
+                            <width>98</width>
+                            <height>28</height>
                            </rect>
                           </property>
                           <widget class="QWidget" name="gridLayoutWidget">
@@ -2021,89 +2021,6 @@ p, li { white-space: pre-wrap; }
                         </widget>
                        </item>
                        <item>
-                        <widget class="QFrame" name="row_2">
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>150</height>
-                          </size>
-                         </property>
-                         <property name="frameShape">
-                          <enum>QFrame::StyledPanel</enum>
-                         </property>
-                         <property name="frameShadow">
-                          <enum>QFrame::Raised</enum>
-                         </property>
-                         <layout class="QVBoxLayout" name="verticalLayout_19">
-                          <item>
-                           <layout class="QGridLayout" name="gridLayout_2">
-                            <item row="0" column="0" rowspan="2">
-                             <widget class="QScrollArea" name="scrollArea">
-                              <property name="styleSheet">
-                               <string notr="true"> QScrollBar:vertical {
-    background: rgb(52, 59, 72);
- }
- QScrollBar:horizontal {
-    background: rgb(52, 59, 72);
- }</string>
-                              </property>
-                              <property name="frameShape">
-                               <enum>QFrame::NoFrame</enum>
-                              </property>
-                              <property name="verticalScrollBarPolicy">
-                               <enum>Qt::ScrollBarAlwaysOn</enum>
-                              </property>
-                              <property name="horizontalScrollBarPolicy">
-                               <enum>Qt::ScrollBarAsNeeded</enum>
-                              </property>
-                              <property name="widgetResizable">
-                               <bool>true</bool>
-                              </property>
-                              <widget class="QWidget" name="scrollAreaWidgetContents">
-                               <property name="geometry">
-                                <rect>
-                                 <x>0</x>
-                                 <y>0</y>
-                                 <width>218</width>
-                                 <height>218</height>
-                                </rect>
-                               </property>
-                               <property name="styleSheet">
-                                <string notr="true"> QScrollBar:vertical {
-	border: none;
-    background: rgb(52, 59, 72);
-    width: 14px;
-    margin: 21px 0 21px 0;
-	border-radius: 0px;
- }</string>
-                               </property>
-                               <layout class="QHBoxLayout" name="horizontalLayout_11">
-                                <item>
-                                 <widget class="QPlainTextEdit" name="plainTextEdit">
-                                  <property name="minimumSize">
-                                   <size>
-                                    <width>200</width>
-                                    <height>200</height>
-                                   </size>
-                                  </property>
-                                  <property name="styleSheet">
-                                   <string notr="true">background-color: rgb(33, 37, 43);</string>
-                                  </property>
-                                  <property name="plainText">
-                                   <string>FILTROS</string>
-                                  </property>
-                                 </widget>
-                                </item>
-                               </layout>
-                              </widget>
-                             </widget>
-                            </item>
-                           </layout>
-                          </item>
-                         </layout>
-                        </widget>
-                       </item>
-                       <item>
                         <widget class="QFrame" name="row_3">
                          <property name="minimumSize">
                           <size>
@@ -2340,8 +2257,11 @@ p, li { white-space: pre-wrap; }
                             <property name="sortingEnabled">
                              <bool>false</bool>
                             </property>
+                            <property name="columnCount">
+                             <number>8</number>
+                            </property>
                             <attribute name="horizontalHeaderVisible">
-                             <bool>false</bool>
+                             <bool>true</bool>
                             </attribute>
                             <attribute name="horizontalHeaderCascadingSectionResizes">
                              <bool>false</bool>
@@ -2451,24 +2371,36 @@ p, li { white-space: pre-wrap; }
                             </row>
                             <column>
                              <property name="text">
-                              <string>0</string>
+                              <string>ID</string>
                              </property>
                             </column>
                             <column>
                              <property name="text">
-                              <string>1</string>
+                              <string>IMAGENES</string>
                              </property>
                             </column>
                             <column>
                              <property name="text">
-                              <string>2</string>
+                              <string>Nº FIBRAS</string>
                              </property>
                             </column>
                             <column>
                              <property name="text">
-                              <string>3</string>
+                              <string>PROB. DE ACIERTO</string>
                              </property>
                             </column>
+                            <column>
+                             <property name="text">
+                              <string>TAMAÑO</string>
+                             </property>
+                            </column>
+                            <column>
+                             <property name="text">
+                              <string>COLOR</string>
+                             </property>
+                            </column>
+                            <column/>
+                            <column/>
                             <item row="0" column="0">
                              <property name="text">
                               <string/>
@@ -2503,7 +2435,6 @@ p, li { white-space: pre-wrap; }
                         </widget>
                        </item>
                       </layout>
-                      <zorder>row_2</zorder>
                       <zorder>row_3</zorder>
                       <zorder>row_1</zorder>
                      </widget>

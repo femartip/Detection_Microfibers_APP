@@ -24,9 +24,12 @@ def extract_color(img, mask):
     color_label = convert_hsl_to_names(average_color_hsl)
     return color_label
 
-def ppx_to_nm(distance, scale, width):
-    nm = (distance*int(scale))/width
-    return nm
+def ppx_to_nm(distance, scale, width, model_type):
+    if model_type == "Filtro de Vidrio":
+        if scale == 750:
+            mm_per_px = 750/155
+        
+    
 
 def mask_size(mask):
     skel = skeletonize(mask/255)
@@ -99,7 +102,7 @@ def inference(data):
     model.eval()
     input_data = torch.tensor(data).permute(2, 0, 1).float()
     output = model(input_data)
-    print("Model loaded in: ", time.time()-start_time)
+    print("Model loaded in: {} seconds".format(time.time()-start_time))
     filtered_output = apply_treshold(output)
     bbox = filtered_output[0].detach().numpy()
     masks = (filtered_output[2].detach().numpy() > 0.5).astype(np.uint8) * 255
@@ -145,7 +148,7 @@ def process_image(path, model_type, scale):
         roi[int(bbox[i][1]):int(bbox[i][3]), int(bbox[i][0]):int(bbox[i][2])] = skel
         color = extract_color(data, roi)
         colors.append(color)
-        sizes.append(ppx_to_nm(ms, scale, data.shape[1]))
+        sizes.append(ms)
         cv2.rectangle(data, (int(bbox[i][0]), int(bbox[i][1])), (int(bbox[i][2]), int(bbox[i][3])), (0, 255, 0), 2)
         cv2.putText(data, str(scores[i]), (int(bbox[i][0]), int(bbox[i][1])), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
     
