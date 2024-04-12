@@ -3,6 +3,17 @@
 ## Project Description
 This project contains an application that is designed to detect micro fibers in sewage. 
 
+Structure:  
+- Utils - 
+- images - Containes all images used in the app
+- models - Torchscript file for bothe CA and Glass models
+- modules - code file
+- test_data - Contains sample images extracted from glass filter.
+- themes - app stylesheet
+- widgets - 
+- main.py - main file of app
+- main.ui - ui file for qtdesigner 
+
 ## Table of Contents
 1. Installation
 2. Usage
@@ -15,7 +26,7 @@ This project contains an application that is designed to detect micro fibers in 
 ### Source Code
 
 #### Prerequisites
-- Python 3.8 or higher
+- Python 3
 - OpenCV
 - PySide6
 - PyQt6
@@ -29,7 +40,10 @@ For running the application form the source code, after installing the prerequis
 
 ### Windows
 Access the following link to download the application: 
+
 https://drive.google.com/file/d/189KJ_GemMjQNTKEMQDvGG0DQSaV3JTnl/view?usp=sharing
+
+https://mega.nz/file/1W0k1KbB#E2CtuinFEz8HR8NjTyzirFQENEXhw5uh-sCCiGGn-48
 
 After downloading the application, extract the files and run the executable file.
 Note that Windows Defender may block the application from running. To run the application, click on "More info" and then "Run anyway".
@@ -37,6 +51,9 @@ Note that Windows Defender may block the application from running. To run the ap
 
 ## Usage
 
+![image](https://github.com/femartip/Detection_Microfibers_APP/assets/99536660/81a4f3b7-5168-4983-8f10-b1a74572c697)
+![image](https://github.com/femartip/Detection_Microfibers_APP/assets/99536660/40a2f57d-9ecd-44fa-8a2d-1fed463c2fa8)
+![image](https://github.com/femartip/Detection_Microfibers_APP/assets/99536660/6c09ec44-6b27-4db6-b2e5-539f861d8c17)
 
 ## Features
 :heavy_check_mark: Implemented features:
@@ -56,6 +73,7 @@ Note that Windows Defender may block the application from running. To run the ap
 :x: Features to be implemented:
 - Linux build
 - Mac build
+- Home page explanation of app
 - Export images at original resolution
 - Make segmentation and bounding box toggleable
 
