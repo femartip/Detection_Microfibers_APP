@@ -66,7 +66,7 @@ Note that Windows Defender may block the application from running. To run the ap
 - Total fiber count
 - Fiber count per image
 - Fiber length measurement at defined scale
-- Fiber approximated color (still in development)
+- Fiber approximated color. Implemented with K-means clustering (Previous version used an approximation based on HSL color space.)
 - Export table data to csv
 - Export image with bounding box
 

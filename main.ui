@@ -2391,7 +2391,7 @@ p, li { white-space: pre-wrap; }
                             </column>
                             <column>
                              <property name="text">
-                              <string>TAMAÑO</string>
+                              <string>TAMAÑO (μm)</string>
                              </property>
                             </column>
                             <column>

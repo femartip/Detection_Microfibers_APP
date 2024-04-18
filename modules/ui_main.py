@@ -1470,7 +1470,7 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem3 = self.tableWidget.horizontalHeaderItem(3)
         ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"PROB. DE ACIERTO", None));
         ___qtablewidgetitem4 = self.tableWidget.horizontalHeaderItem(4)
-        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"TAMA\u00d1O", None));
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"TAMA\u00d1O (\u03bcm)", None));
         ___qtablewidgetitem5 = self.tableWidget.horizontalHeaderItem(5)
         ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"COLOR", None));
         ___qtablewidgetitem6 = self.tableWidget.verticalHeaderItem(0)
