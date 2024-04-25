@@ -67,6 +67,7 @@ def extract_color_kmeans(img, mask):
     
 # GET MASK SIZE
 ############################################################################################
+"""
 def scale_to_ppx(data, scale):
     #extract positions of the image where the bgr values are 0, assuming scale bar is black
     black_pixels_bool = np.all(data == [0, 0, 0], axis=-1).astype(np.uint8)
@@ -83,15 +84,44 @@ def scale_to_ppx(data, scale):
         if ppx == 0:
             return 0
     print(ppx)
-    #return the size of a pixel in nm
+    #return the size of a pixel in microm
     return int(scale)/ppx
-
-def mask_size(mask):
+"""
+#Medida de un pixel en microm segun escala
+def scale_to_ppx(scale: str, model: str):
+    if model == "Filtro de Vidrio":
+        if scale == "200":
+            return 2.05
+        if scale == "350":
+            return 2.50
+        if scale == "500":
+            return 4.03
+        if scale == "750":
+            return 3.9
+        if scale == "1000":
+            return 6.45
+        else:
+            return 0
+    elif model == "Filtro de CA":
+        if scale == "200":
+            return 1.18
+        if scale == "350":
+            return 2.06
+        if scale == "500":
+            return 2.92
+        if scale == "750":
+            return 4.41
+        if scale == "1000":
+            return 5.88
+    else:
+        return 0
+def mask_size(mask, nm_of_ppx):
     skel = skeletonize(mask/255)
     skeleton = skel.astype(np.uint8)*255
     points = np.argwhere(skeleton==255)
     distance = len(points)
-    return skeleton, distance
+    lenght_microm = distance*nm_of_ppx
+    return skeleton, lenght_microm
 ############################################################################################
 
 # MASKS
@@ -201,11 +231,10 @@ def process_image(path, model_type, scale):
 
     data = preprocess_image(data_orig)
     
-    nm_of_ppx = scale_to_ppx(data_orig, scale)
+    nm_of_ppx = scale_to_ppx(scale, model_type)
 
     bbox, masks, scores = inference(data)
     
-
     if len(bbox) == 0:
         return data, None, scores, None, None
     bbox, masks = merge_boxes_and_masks(bbox, masks)
@@ -215,7 +244,7 @@ def process_image(path, model_type, scale):
     empty_mask = np.zeros((IMAGE_SIZE[1],IMAGE_SIZE[0]), dtype=np.uint8)
     for i in range(len(bbox)):
         masks[i] = fit_mask(masks[i], bbox[i])
-        skel, ms = mask_size(masks[i])
+        skel, ms = mask_size(masks[i], nm_of_ppx)
         roi = empty_mask.copy()
         
         roi[int(bbox[i][1]):int(bbox[i][3]), int(bbox[i][0]):int(bbox[i][2])] = skel
@@ -224,9 +253,11 @@ def process_image(path, model_type, scale):
         colors.append(color)
         sizes.append(round(ms*nm_of_ppx, 1))
         cv2.rectangle(data, (int(bbox[i][0]), int(bbox[i][1])), (int(bbox[i][2]), int(bbox[i][3])), (0, 255, 0), 2)
-        cv2.putText(data, str(scores[i]), (int(bbox[i][0]), int(bbox[i][1])), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+        #cv2.putText(data, str(scores[i]), (int(bbox[i][0]), int(bbox[i][1])), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
     
     mask = buld_mask(masks,bbox)
+
+    scores = [round(score, 2) for score in scores]
 
     print("Image processed in: {} seconds".format(time.time()-start))
 

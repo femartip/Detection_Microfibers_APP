@@ -35,11 +35,11 @@ class MainWindow(QMainWindow):
 
         # APP NAME
         # ///////////////////////////////////////////////////////////////
-        title = "Deteccion Micro Plasticos"
-        description = "Deteccion Micro Plasticos"
+        title = "Microfiber Detection"
+        #description = "Application for the detection of microplastic in sewage samples."
         # APPLY TEXTS
         self.setWindowTitle(title)
-        widgets.titleRightInfo.setText(description)
+        widgets.titleRightInfo.setText(title)
 
         # TOGGLE MENU
         # ///////////////////////////////////////////////////////////////
@@ -57,7 +57,7 @@ class MainWindow(QMainWindow):
 
         # COMBO BOX
         widgets.comboBox_filtro.addItems(["Filtro de Vidrio","Filtro de CA"])
-        widgets.comboBox_escala.addItems(["350","500","750", "1000"])
+        widgets.comboBox_escala.addItems(["200","350","500","750", "1000"])
         widgets.comboBox_escala.setCurrentIndex(2)
         # BUTTONS CLICK
         # ///////////////////////////////////////////////////////////////
@@ -161,10 +161,10 @@ class MainWindow(QMainWindow):
         for i, (path, data) in enumerate(IMAGES.items()):
             table.setItem(i, 0, QTableWidgetItem(str(i+1)))
             table.setItem(i, 1, QTableWidgetItem(basename(path)))
-            table.setItem(i, 2, QTableWidgetItem(str(data["Fibres_detected"])))
-            table.setItem(i, 3, QTableWidgetItem(str(data["Scores"])))
-            table.setItem(i, 4, QTableWidgetItem(str(data["Size"])))
-            table.setItem(i, 5, QTableWidgetItem(str(data["Color"])))
+            table.setItem(i, 2, QTableWidgetItem(array_to_str(data["Fibres_detected"])))
+            table.setItem(i, 3, QTableWidgetItem(array_to_str(data["Scores"])))
+            table.setItem(i, 4, QTableWidgetItem(array_to_str(data["Size"])))
+            table.setItem(i, 5, QTableWidgetItem(array_to_str(data["Color"])))
         
         print("Table updated")
 
@@ -332,6 +332,9 @@ def clearLayout(layout):
             else:
                 clearLayout(child.layout())
 
+def array_to_str(array):
+    return str(array).replace("[","").replace("]","").replace("'","")
+
 
 class Load_Window(QDialog):
     def __init__(self, parent=None):
@@ -344,7 +347,7 @@ class Load_Window(QDialog):
         self.setPalette(p)
         self.progress = QProgressBar(self)
         self.progress.setMaximum(100)
-        self.progress.setStyleSheet("QProgressBar { border: 2px solid grey; border-radius: 5px; text-align: center; background-color: #21252b;} QProgressBar::chunk { background-color: '#FF79C6'; width: 20px; }")
+        self.progress.setStyleSheet("QProgressBar { border: 2px solid grey; border-radius: 5px; text-align: center; background-color: #21252b;} QProgressBar::chunk { background-color: '#ffffff'; width: 20px; }")
         layout = QVBoxLayout()
         label = QLabel("Loading...")
         label.setStyleSheet("color:white")
