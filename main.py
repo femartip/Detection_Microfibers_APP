@@ -56,9 +56,9 @@ class MainWindow(QMainWindow):
         
 
         # COMBO BOX
-        widgets.comboBox_filtro.addItems(["Filtro de Vidrio","Filtro de CA"])
+        widgets.comboBox_filtro.addItems(["Glass Filter","CA Filter"])
         widgets.comboBox_escala.addItems(["200","350","500","750", "1000"])
-        widgets.comboBox_escala.setCurrentIndex(2)
+        widgets.comboBox_escala.setCurrentIndex(3)
         # BUTTONS CLICK
         # ///////////////////////////////////////////////////////////////
 
@@ -173,14 +173,14 @@ class MainWindow(QMainWindow):
         print("Importing images message box")
         msg = QMessageBox(self)
         msg.setStyleSheet("color:white;background:#21252B")
-        msg.setText("Cuidado")
-        msg.setInformativeText('Importar nuevas imagenes sobreescribira las imagenes actuales')
-        msg.setWindowTitle("Importar Imagenes")
+        msg.setText("Warning")
+        msg.setInformativeText('This action will clear the current images. Do you want to continue?')
+        msg.setWindowTitle("Import images")
         msg.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         botonCancelar = msg.button(QMessageBox.StandardButton.No)
-        botonCancelar.setText("Cancelar")
+        botonCancelar.setText("Cancel")
         botonAceptar = msg.button(QMessageBox.StandardButton.Yes)
-        botonAceptar.setText("Aceptar")
+        botonAceptar.setText("Accept")
         msg.exec()
 
         if msg.clickedButton() == botonCancelar:
@@ -295,13 +295,20 @@ class MainWindow(QMainWindow):
         options |= QFileDialog.DontUseNativeDialog
         folder_path = QFileDialog.getExistingDirectory(self, "Select Directory")
         if folder_path:
-            for image in images:
+            loading_window = Load_Window(self)
+            loading_window.show()
+            loading_window.set_progress(0)
+            QApplication.processEvents()
+            for i,image in enumerate(images):
+                QApplication.processEvents()
+                loading_window.set_progress((i+1)/len(images)*100)
                 path= image.split("/")[-1]
                 image_data = images[image]["Image"]
                 #cv2.imwrite(os.path.join(folder_path,path), images[image]["Image"])
                 writer = QImageWriter(os.path.join(folder_path,path))
                 image_data_qt = QImage(image_data.data, image_data.shape[1], image_data.shape[0], QImage.Format_RGB888).rgbSwapped()
                 writer.write(image_data_qt)
+            loading_window.close()
             print("Images saved in " + folder_path)
 
     # EXPORTS TABLE TO CSV FORMAT
@@ -347,7 +354,7 @@ class Load_Window(QDialog):
         self.setPalette(p)
         self.progress = QProgressBar(self)
         self.progress.setMaximum(100)
-        self.progress.setStyleSheet("QProgressBar { border: 2px solid grey; border-radius: 5px; text-align: center; background-color: #21252b;} QProgressBar::chunk { background-color: '#ffffff'; width: 20px; }")
+        self.progress.setStyleSheet("QProgressBar { border: 2px solid grey; border-radius: 5px; text-align: center; background-color: #21252b;} QProgressBar::chunk { background-color: '#D4D4D4'; width: 20px; }")
         layout = QVBoxLayout()
         label = QLabel("Loading...")
         label.setStyleSheet("color:white")

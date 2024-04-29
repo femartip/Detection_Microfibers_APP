@@ -40,7 +40,9 @@ def extract_color(img, mask):
 # Solves the error on the webcolors.rgb_to_name function
 def closest_colour(requested_colour):
     min_colours = {}
-    for key, name in webcolors.CSS3_HEX_TO_NAMES.items():
+    primary_colors_dict = webcolors.CSS3_HEX_TO_NAMES
+    #primary_colors_dict = {"#FF0000":"red", "#00FF00":"green", "#FFFF00":"yellow", "#0000FF":"blue", "#6600FF":"purple", "#FF6600":"orange", "#000000":"black", "#FFFFFF":"white"}
+    for key, name in primary_colors_dict.items():
         r_c, g_c, b_c = webcolors.hex_to_rgb(key)
         rd = (r_c - requested_colour[0]) ** 2
         gd = (g_c - requested_colour[1]) ** 2
@@ -54,14 +56,14 @@ def closest_colour(requested_colour):
 def extract_color_kmeans(img, mask):
     roi = cv2.bitwise_and(img, img, mask=mask)
     non_black_pixels_mask = np.any(roi != [0, 0, 0], axis=-1)
-    kmeans_color = KMeans(n_clusters=2).fit(roi[non_black_pixels_mask].reshape(-1, 3))
+    kmeans_color = KMeans(n_clusters=3).fit(roi[non_black_pixels_mask].reshape(-1, 3))
     primary_color = kmeans_color.cluster_centers_[0]
     rgb_primary_color = (int(primary_color[2]), int(primary_color[1]), int(primary_color[0]))
     #print("Primary rgb color: ", rgb_primary_color)
-    try:
-        primary_color_label = webcolors.rgb_to_name(rgb_primary_color, spec='css3')
-    except ValueError:
-        primary_color_label = closest_colour(rgb_primary_color)
+    #try:
+    #    primary_color_label = webcolors.rgb_to_name(rgb_primary_color, spec='css3')
+    #except ValueError:
+    primary_color_label = closest_colour(rgb_primary_color)
     print("Primary kmeans color: ", primary_color_label)
     return primary_color_label
     
@@ -89,7 +91,7 @@ def scale_to_ppx(data, scale):
 """
 #Medida de un pixel en microm segun escala
 def scale_to_ppx(scale: str, model: str):
-    if model == "Filtro de Vidrio":
+    if model == "Glass Filter":
         if scale == "200":
             return 2.05
         if scale == "350":
@@ -102,7 +104,7 @@ def scale_to_ppx(scale: str, model: str):
             return 6.45
         else:
             return 0
-    elif model == "Filtro de CA":
+    elif model == "CA Filter":
         if scale == "200":
             return 1.18
         if scale == "350":
@@ -217,10 +219,10 @@ def process_image(path, model_type, scale):
 
     start = time.time()
 
-    if model_type == "Filtro de Vidrio":
+    if model_type == "Glass Filter":
         MODEL = "models/glass_model.ts"
         IMAGE_SIZE = (1000, 750)
-    elif model_type == "Filtro de CA":
+    elif model_type == "CA Filter":
         MODEL = "models/ca_model.ts"
         IMAGE_SIZE = (1280, 720)
     else:
@@ -251,7 +253,7 @@ def process_image(path, model_type, scale):
         #color = extract_color(data, roi)   #previous color extraction method
         color = extract_color_kmeans(data, roi)
         colors.append(color)
-        sizes.append(round(ms*nm_of_ppx, 1))
+        sizes.append(round(ms, 1))
         cv2.rectangle(data, (int(bbox[i][0]), int(bbox[i][1])), (int(bbox[i][2]), int(bbox[i][3])), (0, 255, 0), 2)
         #cv2.putText(data, str(scores[i]), (int(bbox[i][0]), int(bbox[i][1])), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
     
