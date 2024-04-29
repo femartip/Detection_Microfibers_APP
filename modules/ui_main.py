@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1280, 720)
+        MainWindow.resize(1322, 801)
         MainWindow.setMinimumSize(QSize(940, 560))
         MainWindow.setStyleSheet(u"")
         self.styleSheet = QWidget(MainWindow)
@@ -545,10 +545,9 @@ class Ui_MainWindow(object):
 "\n"
 "\n"
 "")
-        self.appMargins = QVBoxLayout(self.styleSheet)
-        self.appMargins.setSpacing(0)
-        self.appMargins.setObjectName(u"appMargins")
-        self.appMargins.setContentsMargins(10, 10, 10, 10)
+        self.gridLayout_2 = QGridLayout(self.styleSheet)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.gridLayout_2.setContentsMargins(10, 10, 10, 10)
         self.bgApp = QFrame(self.styleSheet)
         self.bgApp.setObjectName(u"bgApp")
         self.bgApp.setStyleSheet(u"")
@@ -885,9 +884,11 @@ class Ui_MainWindow(object):
         self.settingsTopBtn.setMinimumSize(QSize(28, 28))
         self.settingsTopBtn.setMaximumSize(QSize(28, 28))
         self.settingsTopBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon1 = QIcon()
-        icon1.addFile(u"images/icons/cil-vertical-align-bottom.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.settingsTopBtn.setIcon(icon1)
+        self.settingsTopBtn.setAutoFillBackground(False)
+        self.settingsTopBtn.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-vertical-align-bottom.png);\n"
+"background-repeat: no-repeat;\n"
+"background-position: center center;\n"
+"")
         self.settingsTopBtn.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_2.addWidget(self.settingsTopBtn)
@@ -897,9 +898,9 @@ class Ui_MainWindow(object):
         self.minimizeAppBtn.setMinimumSize(QSize(28, 28))
         self.minimizeAppBtn.setMaximumSize(QSize(28, 28))
         self.minimizeAppBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon2 = QIcon()
-        icon2.addFile(u":/icons/images/icons/icon_minimize.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.minimizeAppBtn.setIcon(icon2)
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/images/icons/icon_minimize.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.minimizeAppBtn.setIcon(icon1)
         self.minimizeAppBtn.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_2.addWidget(self.minimizeAppBtn)
@@ -916,9 +917,9 @@ class Ui_MainWindow(object):
         font1.setStyleStrategy(QFont.PreferDefault)
         self.maximizeRestoreAppBtn.setFont(font1)
         self.maximizeRestoreAppBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        icon3 = QIcon()
-        icon3.addFile(u":/icons/images/icons/icon_maximize.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.maximizeRestoreAppBtn.setIcon(icon3)
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/images/icons/icon_maximize.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.maximizeRestoreAppBtn.setIcon(icon2)
         self.maximizeRestoreAppBtn.setIconSize(QSize(20, 20))
 
         self.horizontalLayout_2.addWidget(self.maximizeRestoreAppBtn)
@@ -971,6 +972,46 @@ class Ui_MainWindow(object):
         self.home.setObjectName(u"home")
         self.home.setFont(font)
         self.home.setStyleSheet(u"")
+        self.verticalLayout_18 = QVBoxLayout(self.home)
+        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
+        self.home_title = QLabel(self.home)
+        self.home_title.setObjectName(u"home_title")
+        self.home_title.setStyleSheet(u"font:60px")
+        self.home_title.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_18.addWidget(self.home_title)
+
+        self.home_desc = QLabel(self.home)
+        self.home_desc.setObjectName(u"home_desc")
+        self.home_desc.setTextFormat(Qt.RichText)
+        self.home_desc.setScaledContents(True)
+        self.home_desc.setWordWrap(True)
+
+        self.verticalLayout_18.addWidget(self.home_desc)
+
+        self.horizontalLayout_9 = QHBoxLayout()
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.home_img_2 = QLabel(self.home)
+        self.home_img_2.setObjectName(u"home_img_2")
+        self.home_img_2.setMinimumSize(QSize(0, 0))
+        self.home_img_2.setStyleSheet(u"")
+        self.home_img_2.setPixmap(QPixmap(u"images/images/CA_dataset_samples.jpg"))
+        self.home_img_2.setScaledContents(True)
+
+        self.horizontalLayout_9.addWidget(self.home_img_2)
+
+        self.home_img_1 = QLabel(self.home)
+        self.home_img_1.setObjectName(u"home_img_1")
+        self.home_img_1.setMinimumSize(QSize(0, 0))
+        self.home_img_1.setStyleSheet(u"")
+        self.home_img_1.setPixmap(QPixmap(u"images/images/glass_dataset_samples.jpg"))
+        self.home_img_1.setScaledContents(True)
+
+        self.horizontalLayout_9.addWidget(self.home_img_1)
+
+
+        self.verticalLayout_18.addLayout(self.horizontalLayout_9)
+
         self.stackedWidget.addWidget(self.home)
         self.images = QWidget()
         self.images.setObjectName(u"images")
@@ -982,7 +1023,7 @@ class Ui_MainWindow(object):
         self.scroll_area_for_images.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1158, 496))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1200, 577))
         self.gridLayoutWidget = QWidget(self.scrollAreaWidgetContents_2)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
         self.gridLayoutWidget.setGeometry(QRect(9, -1, 1171, 511))
@@ -1137,8 +1178,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
         self.horizontalLayout_12.setContentsMargins(0, 0, 0, 0)
         self.tableWidget = QTableWidget(self.row_3)
-        if (self.tableWidget.columnCount() < 8):
-            self.tableWidget.setColumnCount(8)
+        if (self.tableWidget.columnCount() < 6):
+            self.tableWidget.setColumnCount(6)
         __qtablewidgetitem = QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
@@ -1241,7 +1282,7 @@ class Ui_MainWindow(object):
         self.tableWidget.setShowGrid(True)
         self.tableWidget.setGridStyle(Qt.SolidLine)
         self.tableWidget.setSortingEnabled(False)
-        self.tableWidget.setColumnCount(8)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.horizontalHeader().setVisible(True)
         self.tableWidget.horizontalHeader().setCascadingSectionResizes(False)
         self.tableWidget.horizontalHeader().setDefaultSectionSize(200)
@@ -1384,7 +1425,7 @@ class Ui_MainWindow(object):
         self.appLayout.addWidget(self.contentBox)
 
 
-        self.appMargins.addWidget(self.bgApp)
+        self.gridLayout_2.addWidget(self.bgApp, 0, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.styleSheet)
 
@@ -1399,8 +1440,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.toggleButton.setText("")
-        self.btn_home.setText(QCoreApplication.translate("MainWindow", u"Inicio", None))
-        self.btn_images.setText(QCoreApplication.translate("MainWindow", u"Imagenes", None))
+        self.btn_home.setText(QCoreApplication.translate("MainWindow", u"Home", None))
+        self.btn_images.setText(QCoreApplication.translate("MainWindow", u"Images", None))
         self.btn_dashboard.setText(QCoreApplication.translate("MainWindow", u"Dashboard", None))
         self.toggleLeftBox.setText("")
         self.extraLabel.setText(QCoreApplication.translate("MainWindow", u"Left Box", None))
@@ -1425,7 +1466,7 @@ class Ui_MainWindow(object):
 "<p align=\"center\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600; color:#ff79c6;\">Convert QRC</span></p>\n"
 "<p align=\"center\" style=\" margin-top:12px; "
                         "margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt; color:#ffffff;\">pyside6-rcc resources.qrc -o resources_rc.py</span></p></body></html>", None))
-        self.titleRightInfo.setText(QCoreApplication.translate("MainWindow", u"Microplastic Detection", None))
+        self.titleRightInfo.setText(QCoreApplication.translate("MainWindow", u"MicroFiberDetect", None))
 #if QT_CONFIG(tooltip)
         self.settingsTopBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Settings", None))
 #endif // QT_CONFIG(tooltip)
@@ -1442,6 +1483,20 @@ class Ui_MainWindow(object):
         self.closeAppBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Close", None))
 #endif // QT_CONFIG(tooltip)
         self.closeAppBtn.setText("")
+        self.home_title.setText(QCoreApplication.translate("MainWindow", u"Detection of Microfibers in Sewage", None))
+        self.home_desc.setText(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">MicroFiberDetect is a powerful desktop application designed to tackle the growing threat of microplastic pollution in water bodies. With cutting-edge technology and innovative features, MicroFiberDetect empowers users to analyze sewage samples with accuracy and efficiency. </span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt; font-weight:600; text-decoration: underline;\">Key Features: </span></p>\n"
+"<p style=\" "
+                        "margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">- </span><span style=\" font-size:11pt; font-weight:600;\">Advanced Detection Algorithms:</span><span style=\" font-size:11pt;\"> Utilizing state-of-the-art image recognition and machine learning algorithms, MicroFiberDetect can identify and quantify microfibers in sewage samples with exceptional precision. </span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">- </span><span style=\" font-size:11pt; font-weight:600;\">Data Extraction:</span><span style=\" font-size:11pt;\"> MicroFiberDetect provides a report of the detected fibers. This includes the number of fibers containing in each image, the length of each fiber and its corresponding color.</span></p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-i"
+                        "ndent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">- </span><span style=\" font-size:11pt; font-weight:600;\">User-Friendly Interface: </span><span style=\" font-size:11pt;\">Our intuitive desktop interface makes it easy for users to capture, analyze, and visualize data from sewage samples. With just a few clicks, you can gain valuable insights into the presence of microfibers in your local waterways.</span></p></body></html>", None))
+        self.home_img_2.setText("")
+        self.home_img_1.setText("")
         self.bttn_import_images.setText("")
         self.images_title_label.setText(QCoreApplication.translate("MainWindow", u"Load Image:", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Number of Images per Row:", None))
@@ -1501,6 +1556,6 @@ class Ui_MainWindow(object):
         self.btn_save_images.setText(QCoreApplication.translate("MainWindow", u"Save Images", None))
         self.btn_export_csv.setText(QCoreApplication.translate("MainWindow", u"Export Table to CSV", None))
         self.btn_logout.setText(QCoreApplication.translate("MainWindow", u"Logout", None))
-        self.version.setText(QCoreApplication.translate("MainWindow", u"v0.0.2", None))
+        self.version.setText(QCoreApplication.translate("MainWindow", u"v0.0.3", None))
     # retranslateUi
 

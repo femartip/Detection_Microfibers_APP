@@ -35,7 +35,7 @@ class MainWindow(QMainWindow):
 
         # APP NAME
         # ///////////////////////////////////////////////////////////////
-        title = "Microfiber Detection"
+        title = "MicroFiberDetect"
         #description = "Application for the detection of microplastic in sewage samples."
         # APPLY TEXTS
         self.setWindowTitle(title)

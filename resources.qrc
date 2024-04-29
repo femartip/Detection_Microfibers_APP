@@ -1,6 +1,8 @@
 <RCC>
   <qresource prefix="images">
+    <file>images/images/CA_dataset_samples.jpg</file>
     <file>images/images/logo.png</file>
+    <file>images/images/glass_dataset_samples.jpg</file>
   </qresource>
   <qresource prefix="icons">
     <file>images/icons/cil-3d.png</file>

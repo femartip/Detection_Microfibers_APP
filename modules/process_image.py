@@ -1,5 +1,5 @@
 import torch 
-import torchvision
+import torchvision      #Eventough it is not used, it is needed to load the model
 import numpy as np
 import cv2
 from skimage.morphology import skeletonize
