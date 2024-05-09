@@ -1,7 +1,7 @@
-# Micro Fiber Detection in Sewage
+# Micro Fiber Detection in Sludge
 
 ## Project Description
-This project contains an application that is designed to detect micro fibers in sewage. 
+This project contains an application that is designed to detect micro fibers in sludge. 
 
 Structure:  
 - Utils - 
