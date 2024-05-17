@@ -1483,7 +1483,7 @@ class Ui_MainWindow(object):
         self.closeAppBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Close", None))
 #endif // QT_CONFIG(tooltip)
         self.closeAppBtn.setText("")
-        self.home_title.setText(QCoreApplication.translate("MainWindow", u"Detection of Microfibers in Sewage", None))
+        self.home_title.setText(QCoreApplication.translate("MainWindow", u"Detection of Microfibers in Sludge", None))
         self.home_desc.setText(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -1491,14 +1491,14 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">MicroFiberDetect is a powerful desktop application designed to tackle the growing threat of microplastic pollution in water bodies. With cutting-edge technology and innovative features, MicroFiberDetect empowers users to analyze sewage samples with accuracy and efficiency. </span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt; font-weight:600; text-decoration: underline;\">Key Features: </span></p>\n"
 "<p style=\" "
-                        "margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">- </span><span style=\" font-size:11pt; font-weight:600;\">Advanced Detection Algorithms:</span><span style=\" font-size:11pt;\"> Utilizing state-of-the-art image recognition and machine learning algorithms, MicroFiberDetect can identify and quantify microfibers in sewage samples with exceptional precision. </span></p>\n"
+                        "margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">- </span><span style=\" font-size:11pt; font-weight:600;\">Advanced Detection Algorithms:</span><span style=\" font-size:11pt;\"> Utilizing state-of-the-art image recognition and machine learning algorithms, MicroFiberDetect can identify and quantify microfibers in sludge samples with exceptional precision. </span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">- </span><span style=\" font-size:11pt; font-weight:600;\">Data Extraction:</span><span style=\" font-size:11pt;\"> MicroFiberDetect provides a report of the detected fibers. This includes the number of fibers containing in each image, the length of each fiber and its corresponding color.</span></p>\n"
 "<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-i"
                         "ndent:0; text-indent:0px;\"><span style=\" font-size:11pt;\">- </span><span style=\" font-size:11pt; font-weight:600;\">User-Friendly Interface: </span><span style=\" font-size:11pt;\">Our intuitive desktop interface makes it easy for users to capture, analyze, and visualize data from sewage samples. With just a few clicks, you can gain valuable insights into the presence of microfibers in your local waterways.</span></p></body></html>", None))
         self.home_img_2.setText("")
         self.home_img_1.setText("")
         self.bttn_import_images.setText("")
-        self.images_title_label.setText(QCoreApplication.translate("MainWindow", u"Load Image:", None))
+        self.images_title_label.setText(QCoreApplication.translate("MainWindow", u"Load Images:", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Number of Images per Row:", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Type of Filter:", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Image Scale:", None))
