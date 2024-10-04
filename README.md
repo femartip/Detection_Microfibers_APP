@@ -67,11 +67,11 @@ Note that Windows Defender may block the application from running. To run the ap
 - Fiber approximated color. Implemented with K-means clustering (Previous version used an approximation based on HSL color space.)
 - Export table data to csv
 - Export image with bounding box
+- Home page explanation of app
 
 :x: Features to be implemented:
 - Linux build
 - Mac build
-- Home page explanation of app
 - Export images at original resolution
 - Make segmentation and bounding box toggleable
 
