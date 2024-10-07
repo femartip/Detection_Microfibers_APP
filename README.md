@@ -1,7 +1,7 @@
-# Micro Fiber Detection in Sewage
+# Micro Fiber Detection in Sludge
 
 ## Project Description
-This project contains an application that is designed to detect micro fibers in sewage. 
+This project contains an application that is designed to detect micro fibers in sludge. 
 
 Structure:  
 - Utils - 
@@ -41,9 +41,7 @@ For running the application form the source code, after installing the prerequis
 ### Windows
 Access the following link to download the application: 
 
-https://drive.google.com/file/d/189KJ_GemMjQNTKEMQDvGG0DQSaV3JTnl/view?usp=sharing
-
-https://mega.nz/file/1W0k1KbB#E2CtuinFEz8HR8NjTyzirFQENEXhw5uh-sCCiGGn-48
+https://mega.nz/file/4LFWFQrS#KUGnmFZsK1YgOl-IElC9jyrTNJPspCHw9VCDHTGcAuM
 
 After downloading the application, extract the files and run the executable file.
 Note that Windows Defender may block the application from running. To run the application, click on "More info" and then "Run anyway".
@@ -69,11 +67,11 @@ Note that Windows Defender may block the application from running. To run the ap
 - Fiber approximated color. Implemented with K-means clustering (Previous version used an approximation based on HSL color space.)
 - Export table data to csv
 - Export image with bounding box
+- Home page explanation of app
 
 :x: Features to be implemented:
 - Linux build
 - Mac build
-- Home page explanation of app
 - Export images at original resolution
 - Make segmentation and bounding box toggleable
 
