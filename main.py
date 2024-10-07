@@ -214,6 +214,14 @@ class MainWindow(QMainWindow):
                     except Exception as e:
                         print(e)
                         print("Error processing image")
+                        # Show error message in interface
+                        error_msg = QMessageBox(self)
+                        error_msg.setStyleSheet("color:white;background:#21252B")
+                        error_msg.setInformativeText('Error processing image ' + path + ' \n' + str(e))
+                        error_msg.setWindowTitle("Error")
+                        error_msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+                        error_msg.setWindowFlags(error_msg.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+                        error_msg.exec()
                         continue
                     IMAGES[path] = {"Image":result_img,"Mask": mask,"Fibres_detected": len(scores), "Scores":scores, "Size":size, "Color":color}
                     total_fibre_count += len(scores)
