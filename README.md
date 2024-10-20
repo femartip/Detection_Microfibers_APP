@@ -1,31 +1,35 @@
 # Micro Fiber Detection in Sludge
 
 ## Project Description
-This project contains an application that is designed to detect micro fibers in sludge. 
 
-Structure:  
-- Utils - 
+This project contains an application that is designed to detect micro fibers in sludge.
+
+Structure:
+
+- Utils -
 - images - Containes all images used in the app
 - models - Torchscript file for bothe CA and Glass models
 - modules - code file
 - test_data - Contains sample images extracted from glass filter.
 - themes - app stylesheet
-- widgets - 
+- widgets -
 - main.py - main file of app
-- main.ui - ui file for qtdesigner 
+- main.ui - ui file for qtdesigner
 
 ## Table of Contents
+
 1. Installation
 2. Usage
 3. Features
-3. Contributing
-4. License
+4. Contributing
+5. License
 
 ## Installation
 
 ### Source Code
 
 #### Prerequisites
+
 - Python 3
 - OpenCV
 - PySide6
@@ -39,13 +43,13 @@ Structure:
 For running the application form the source code, after installing the prerequisits, 'main.py' file should be executed.
 
 ### Windows
-Access the following link to download the application: 
+
+Access the following link to download the application:
 
 https://mega.nz/file/4LFWFQrS#KUGnmFZsK1YgOl-IElC9jyrTNJPspCHw9VCDHTGcAuM
 
 After downloading the application, extract the files and run the executable file.
 Note that Windows Defender may block the application from running. To run the application, click on "More info" and then "Run anyway".
-
 
 ## Usage
 
@@ -54,7 +58,9 @@ Note that Windows Defender may block the application from running. To run the ap
 ![image](https://github.com/femartip/Detection_Microfibers_APP/assets/99536660/6c09ec44-6b27-4db6-b2e5-539f861d8c17)
 
 ## Features
-:heavy_check_mark: Implemented features:
+
+✔️ Implemented features:
+
 - Windows build
 - Carbonated active filter model for detecion
 - Glass fiber filter model for detection
@@ -68,17 +74,21 @@ Note that Windows Defender may block the application from running. To run the ap
 - Export table data to csv
 - Export image with bounding box
 - Home page explanation of app
+- Cuda support
 
-:x: Features to be implemented:
+❌ Features to be implemented:
+
 - Linux build
 - Mac build
 - Export images at original resolution
 - Make segmentation and bounding box toggleable
 
 ## Contributing
+
 If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.
 
 ## License
+
 MIT License
 
 Copyright (c) 2024 Felix Marti Perez

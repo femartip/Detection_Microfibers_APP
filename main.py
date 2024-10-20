@@ -10,7 +10,7 @@ from PySide6 import QtCore
 # ///////////////////////////////////////////////////////////////
 from modules import *
 from widgets import *
-from modules.process_image import process_image
+from modules.process_images import ProcessingImagesWindow
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
 
 # SET AS GLOBAL WIDGETS
@@ -20,7 +20,8 @@ IMAGES = {}
 
 class MainWindow(QMainWindow):
     def __init__(self):
-        QMainWindow.__init__(self)
+        #QMainWindow.__init__(self)
+        super().__init__()
 
         # SET AS GLOBAL WIDGETS
         # ///////////////////////////////////////////////////////////////
@@ -82,7 +83,7 @@ class MainWindow(QMainWindow):
 
         # IMAGE WIDGET BUTTONS
         widgets.bttn_import_images.clicked.connect(self.import_images)
-        widgets.spinbox_n_imagenes.valueChanged.connect(lambda: UIFunctions.update_image_widget(self, widgets.spinbox_n_imagenes.value(), widgets, IMAGES))
+        #widgets.spinbox_n_imagenes.valueChanged.connect(lambda: UIFunctions.update_image_widget(self, widgets.spinbox_n_imagenes.value(), widgets, IMAGES))
         widgets.spinbox_n_imagenes.setEnabled(False)
         # RIGHT SIDE SETTINGS MENU BUTTONS
         widgets.btn_logout.setVisible(False)
@@ -192,38 +193,31 @@ class MainWindow(QMainWindow):
             image_path, _ = file_dialog.getOpenFileNames(self, 'Open Image', '', 'Image Files (*.png *.jpg *.jpeg *.bmp)')
             # Display all chosen images
             if image_path:
-                loading_window = Load_Window(self)
-                loading_window.show()
-                loading_window.set_progress(0)
-                QApplication.processEvents()
                 global IMAGES
                 IMAGES.clear()
                 scroll_area = widgets.scroll_area_for_images
                 width = scroll_area.width()
                 image_size = width // 2
                 image_layout = widgets.grid_layout_images
-                #for i in reversed(range(image_layout.count())):
-                #    image_layout.removeWidget(image_layout.itemAtPosition(i).widget())                    
                 clearLayout(image_layout)
                 image_widget = widgets.scrollAreaWidgetContents_2
                 total_fibre_count = 0
-                for i, path in enumerate(image_path):
-                    QApplication.processEvents() # To prevent the GUI from freezing
-                    try:
-                        result_img, mask, scores, size, color = process_image(path, widgets.comboBox_filtro.currentText(), widgets.comboBox_escala.currentText())
-                    except Exception as e:
-                        print(e)
-                        print("Error processing image")
-                        # Show error message in interface
-                        error_msg = QMessageBox(self)
-                        error_msg.setStyleSheet("color:white;background:#21252B")
-                        error_msg.setInformativeText('Error processing image ' + path + ' \n' + str(e))
-                        error_msg.setWindowTitle("Error")
-                        error_msg.setStandardButtons(QMessageBox.StandardButton.Ok)
-                        error_msg.setWindowFlags(error_msg.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
-                        error_msg.exec()
-                        continue
-                    IMAGES[path] = {"Image":result_img,"Mask": mask,"Fibres_detected": len(scores), "Scores":scores, "Size":size, "Color":color}
+            
+                self.processimageWindow = ProcessingImagesWindow(self)
+                self.processimageWindow.show()
+                try:
+                    results = self.processimageWindow.process_images(image_path, widgets.comboBox_filtro.currentText(), widgets.comboBox_escala.currentText())
+                except Exception as e:
+                    print(f"Error processing images: {e}")
+                    self.processimageWindow.close()
+                    self.error_window(e)
+                    return
+                self.processimageWindow.close()
+                
+                for i, result in enumerate(results.keys()):
+                    path = result
+                    result_img, mask, scores, size, color = results[path]
+                    IMAGES[path] = {"Image": result_img, "Mask": mask, "Fibres_detected": len(scores), "Scores": scores, "Size": size, "Color": color}
                     total_fibre_count += len(scores)
                     vbox = QVBoxLayout()
                     height, width, channel = result_img.shape
@@ -242,11 +236,11 @@ class MainWindow(QMainWindow):
                         row = 0
                         col = 0
                     image_layout.addLayout(vbox, row, col)
-                    loading_window.set_progress((i+1)/len(image_path)*100)
+
                 
                 self.update_table()
                 widgets.n_fibras_detectadas.setText(str(total_fibre_count))
-                loading_window.close()
+            
                 image_widget.setLayout(image_layout)
                 scroll_area.setWidget(image_widget)
                 widgets.scroll_area_for_images
@@ -263,16 +257,17 @@ class MainWindow(QMainWindow):
                 widgets.btn_export_csv.setEnabled(True)
                 widgets.btn_export_csv.setStyleSheet('background-image: url(:/icons/images/icons/cil-file.png); color: white;')
                 print("Images imported")
+                
 
     # CHANGES THE NUMBER OF IMAGES DISPLAYED IN A ROW
     def update_image_widget(self, n_images, widgets, images):
-        print(f"Updating image widget to display {n_images} images")
         grid_layout = widgets.grid_layout_images
         image_widget = widgets.scrollAreaWidgetContents_2
         scroll_area = widgets.scroll_area_for_images
         print(f"Grid layout {grid_layout}")
         current_columns = grid_layout.columnCount()
-        print(f"Current columns {current_columns}")        
+        print(f"Current columns {current_columns}") 
+        print(f"Updating image widget to display {n_images} images")
         clearLayout(grid_layout)
         
         for i, image in enumerate(images):
@@ -338,6 +333,18 @@ class MainWindow(QMainWindow):
                             else:
                                 rowdata.append('')
                         writer.writerow(rowdata)
+
+    def error_window(self, message):
+        print(message)
+        print("Error processing image")
+        # Show error message in interface
+        error_msg = QMessageBox(self)
+        error_msg.setStyleSheet("color:white;background:#21252B")
+        error_msg.setInformativeText('Error processing image \n' + str(message))
+        error_msg.setWindowTitle("Error")
+        error_msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+        error_msg.setWindowFlags(error_msg.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+        error_msg.exec()
             
 def clearLayout(layout):
         while layout.count():
