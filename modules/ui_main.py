@@ -1023,7 +1023,7 @@ class Ui_MainWindow(object):
         self.scroll_area_for_images.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1200, 577))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 98, 28))
         self.gridLayoutWidget = QWidget(self.scrollAreaWidgetContents_2)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
         self.gridLayoutWidget.setGeometry(QRect(9, -1, 1171, 511))
@@ -1556,6 +1556,6 @@ class Ui_MainWindow(object):
         self.btn_save_images.setText(QCoreApplication.translate("MainWindow", u"Save Images", None))
         self.btn_export_csv.setText(QCoreApplication.translate("MainWindow", u"Export Table to CSV", None))
         self.btn_logout.setText(QCoreApplication.translate("MainWindow", u"Logout", None))
-        self.version.setText(QCoreApplication.translate("MainWindow", u"v0.0.3", None))
+        self.version.setText(QCoreApplication.translate("MainWindow", u"v1.0.0", None))
     # retranslateUi
 

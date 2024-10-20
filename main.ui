@@ -1808,8 +1808,8 @@ p, li { white-space: pre-wrap; }
                            <rect>
                             <x>0</x>
                             <y>0</y>
-                            <width>1200</width>
-                            <height>577</height>
+                            <width>98</width>
+                            <height>28</height>
                            </rect>
                           </property>
                           <widget class="QWidget" name="gridLayoutWidget">
@@ -2783,7 +2783,7 @@ p, li { white-space: pre-wrap; }
                 <item>
                  <widget class="QLabel" name="version">
                   <property name="text">
-                   <string>v0.0.3</string>
+                   <string>v1.0.0</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
