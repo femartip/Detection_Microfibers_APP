@@ -46,9 +46,10 @@ For running the application form the source code, after installing the prerequis
 
 Access the following link to download the application:
 
-https://mega.nz/file/4LFWFQrS#KUGnmFZsK1YgOl-IElC9jyrTNJPspCHw9VCDHTGcAuM
+https://drive.google.com/file/d/10oMat7ValwrEglhZC1f1nt1y8SrFx-be/view?usp=sharing
 
 After downloading the application, extract the files and run the executable file.
+
 Note that Windows Defender may block the application from running. To run the application, click on "More info" and then "Run anyway".
 
 ## Usage

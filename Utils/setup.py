@@ -6,10 +6,13 @@ system = sys.platform
 if system == "linux":
     PyInstaller.__main__.run([
         'main.py',
-        '--distpath ./linux_build/dist',
-        '--specpath ./linux_build',
-        '--name Detector_fibras',
-        '--windowed'
+        '--distpath=./linux_build/dist',
+        '--workpath=./windows_build/build',
+        '--specpath=./linux_build',
+        '--noconfirm',
+        '--name=MicroFiberDetect',
+        '--windowed',
+        '-i=../images/icon.ico',
     ])
     #pyinstaller main.py --distpath ./linux_build/dist --workpath ./linux_build/build --noconfirm --specpath ./linux_build --name Detector_fibras --add-data ../modules/*.py:./modules/ --add-data ../models/model.ts:. --collect-all torch --collect-all torchvision --collect-all numpy --collect-all opencv-python
 elif system == 'win32':

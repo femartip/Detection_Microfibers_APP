@@ -12,6 +12,7 @@ import torch
 import torchvision
 from sklearn.cluster import KMeans
 from skimage.morphology import skeletonize
+from scipy.spatial import distance
 import time
 
 
@@ -81,7 +82,7 @@ class ProcessingImagesWindow(Load_Window):
 
 # COLOR EXTRACTION
     ############################################################################################
-    # Function that gets the closest primary color to the given hls color 
+    """
     # does not work so well
     def convert_hsl_to_names(self, hls_tuple):
         colors = {"red":[0,100,50], "green":[147,50,47], "yellow":[39,100,50], "blue":[240,100,50], "pink":[300,76,72]}
@@ -90,55 +91,64 @@ class ProcessingImagesWindow(Load_Window):
             distances.append(np.sqrt((colors[color][0]-hls_tuple[0])**2 + (colors[color][1]-hls_tuple[1])**2 + (colors[color][2]-hls_tuple[2])**2))
         color_label = list(colors.keys())[np.argmin(distances)]
         return color_label
-
-    # Function that extracts the color of the object in the image by 
-    # extracting the region of interest and calculating the average color
-    # of the region in the HSL color space
-    def extract_color(self, img, mask):
-        image_hls = cv2.cvtColor(img, cv2.COLOR_BGR2HLS)
-        roi = cv2.bitwise_and(image_hls, image_hls, mask=mask)
-        non_black_pixels_mask = np.any(roi != [0, 0, 0], axis=-1)
-        average_color_per_row = np.average(roi[non_black_pixels_mask], axis=0)
-        average_color_hsl = [int((average_color_per_row[0]/179)*360), int((average_color_per_row[2]/255)*100), int((average_color_per_row[1]/255)*100)]
-        color_label = self.convert_hsl_to_names(average_color_hsl)   #convert to color name by getting the minimum distance to a primary color
-        return color_label
+    """
+    # Function that gets the closest primary color to the given rgb color 
+    def closest_simple_color(self, requested_color):
+        simple_colors = {'red': (255, 0, 0),'yellow': (255, 255, 0),'green': (0, 255, 0),'blue': (0, 0, 255),'orange': (255, 165, 0),'black': (0, 0, 0)} 
+        min_dist = float('inf')
+        closest_color = None
+        
+        for color_name, color_value in simple_colors.items():
+            dist = distance.euclidean(requested_color, color_value)
+            if dist < min_dist:
+                min_dist = dist
+                closest_color = color_name
+                
+        return closest_color
 
     # Function that gets the closest color name to the given rgb color
     # by calculating the euclidean distance between the rgb color and the
     # colors in the CSS3_HEX_TO_NAMES dictionary
     # Solves the error on the webcolors.rgb_to_name function
-    def closest_colour(self, requested_colour):
-        min_colours = {}
-        primary_colors_dict = webcolors.CSS3_HEX_TO_NAMES
-        #primary_colors_dict = {"#FF0000":"red", "#00FF00":"green", "#FFFF00":"yellow", "#0000FF":"blue", "#6600FF":"purple", "#FF6600":"orange", "#000000":"black", "#FFFFFF":"white"}
-        for key, name in primary_colors_dict.items():
+    def closest_color(self, requested_color):
+        min_colors = {}
+        for key, name in webcolors.CSS3_HEX_TO_NAMES.items():
             r_c, g_c, b_c = webcolors.hex_to_rgb(key)
-            rd = (r_c - requested_colour[0]) ** 2
-            gd = (g_c - requested_colour[1]) ** 2
-            bd = (b_c - requested_colour[2]) ** 2
-            min_colours[(rd + gd + bd)] = name
-        return min_colours[min(min_colours.keys())]
+            rd = (r_c - requested_color[0]) ** 2
+            gd = (g_c - requested_color[1]) ** 2
+            bd = (b_c - requested_color[2]) ** 2
+            min_colors[(rd + gd + bd)] = name
+        return min_colors[min(min_colors.keys())]
 
     # Function that extracts the color of the object in the image by
-    # extracting the region of interest and applying kmeans clustering
-    # to the region to get the primary color
-    def extract_color_kmeans(self, img, mask):
-        roi = cv2.bitwise_and(img, img, mask=mask)
-        non_black_pixels_mask = np.any(roi != [0, 0, 0], axis=-1)
+    # extracting the region of interest and applying kmeans clustering   
+    # to the region to get the primary color 
+    def get_dominant_color(self, image, k=5):
+        pixels = image.reshape((-1, 3))
         try:
-            kmeans_color = KMeans(n_clusters=3, n_init='auto').fit(roi[non_black_pixels_mask].reshape(-1, 3))
+            kmeans = KMeans(n_clusters=k, n_init='auto')
         except ValueError:
-            return "No color    "
-        primary_color = kmeans_color.cluster_centers_[0]
-        rgb_primary_color = (int(primary_color[2]), int(primary_color[1]), int(primary_color[0]))
-        #print("Primary rgb color: ", rgb_primary_color)
-        #try:
-        #    primary_color_label = webcolors.rgb_to_name(rgb_primary_color, spec='css3')
-        #except ValueError:
-        #primary_color_label = closest_colour(rgb_primary_color)
-        primary_color_label = str(rgb_primary_color)
-        return primary_color_label
+            raise ValueError("Error creating KMeans object")
+        kmeans.fit(pixels)
+        dominant_color = kmeans.cluster_centers_[0].astype(int)
+        return dominant_color
+
+    # Step 3: Extract the primary color name
+    def get_primary_color_name(self, image_bgr, mask):
+        roi = cv2.bitwise_and(image_bgr, image_bgr, mask=mask)
+        image_hls = cv2.cvtColor(roi, cv2.COLOR_BGR2HLS)
+        non_black_pixels_mask = np.any(image_hls != [0, 0, 0], axis=-1)
+        image_hls = image_hls[non_black_pixels_mask]
+
+        dominant_color = self.get_dominant_color(image_hls)
+        dominant_hls_image = np.full((1,1,3), dominant_color, dtype=np.uint8)
+        dominant_rgb = cv2.cvtColor(dominant_hls_image, cv2.COLOR_HLS2RGB).reshape((3,))
+        #cv2.imshow("Dominant color", dominant_rgb)
+
+        color_name = self.closest_simple_color(dominant_rgb)
         
+        return color_name
+
     # GET MASK SIZE
     ############################################################################################
     #Medida de un pixel en microm segun escala
@@ -269,7 +279,7 @@ class ProcessingImagesWindow(Load_Window):
     def process_image(self, path, model_type, scale):
         start = time.time()
 
-        data_orig = cv2.imread(path)
+        data_orig = cv2.imread(path)    #Read image in BGR format
 
         data = self.preprocess_image(data_orig)
         
@@ -285,13 +295,15 @@ class ProcessingImagesWindow(Load_Window):
         sizes = []
         empty_mask = np.zeros((IMAGE_SIZE[1],IMAGE_SIZE[0]), dtype=np.uint8)
         for i in range(len(bbox)):
-            masks[i] = self.fit_mask(masks[i], bbox[i])
-            skel, ms = self.mask_size(masks[i], nm_of_ppx)
+            mask = self.fit_mask(masks[i], bbox[i])
+            masks[i] = mask
+            skel, ms = self.mask_size(mask, nm_of_ppx)
             roi = empty_mask.copy()
             
             roi[int(bbox[i][1]):int(bbox[i][3]), int(bbox[i][0]):int(bbox[i][2])] = skel
             #color = extract_color(data, roi)   #previous color extraction method
-            color = self.extract_color_kmeans(data, roi)
+            #color = self.extract_color_kmeans(data, roi)
+            color = self.get_primary_color_name(data, roi)
             colors.append(color)
             sizes.append(round(ms, 1))
             cv2.rectangle(data, (int(bbox[i][0]), int(bbox[i][1])), (int(bbox[i][2]), int(bbox[i][3])), (0, 255, 0), 2)

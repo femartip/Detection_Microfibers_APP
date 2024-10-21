@@ -152,5 +152,6 @@ cython_debug/
 #.idea/
 
 #ZIP files
-windows_build/*.zip
+windows_build/
+linux_build/
 
