@@ -11,7 +11,7 @@ import webcolors
 import torch
 import torchvision
 from sklearn.cluster import KMeans
-from skimage.morphology import skeletonize
+from skimage.morphology import skeletonize, thin
 from scipy.spatial import distance
 import time
 
@@ -136,6 +136,7 @@ class ProcessingImagesWindow(Load_Window):
     # Step 3: Extract the primary color name
     def get_primary_color_name(self, image_bgr, mask):
         roi = cv2.bitwise_and(image_bgr, image_bgr, mask=mask)
+        #cv2.imshow("roi", roi)
         image_hls = cv2.cvtColor(roi, cv2.COLOR_BGR2HLS)
         non_black_pixels_mask = np.any(image_hls != [0, 0, 0], axis=-1)
         image_hls = image_hls[non_black_pixels_mask]
@@ -143,7 +144,6 @@ class ProcessingImagesWindow(Load_Window):
         dominant_color = self.get_dominant_color(image_hls)
         dominant_hls_image = np.full((1,1,3), dominant_color, dtype=np.uint8)
         dominant_rgb = cv2.cvtColor(dominant_hls_image, cv2.COLOR_HLS2RGB).reshape((3,))
-        #cv2.imshow("Dominant color", dominant_rgb)
 
         color_name = self.closest_simple_color(dominant_rgb)
         
@@ -179,8 +179,9 @@ class ProcessingImagesWindow(Load_Window):
                 return 5.88
         else:
             return 0
+        
     def mask_size(self, mask, nm_of_ppx):
-        skel = skeletonize(mask/255)
+        skel = thin(mask/255, max_num_iter=5)
         skeleton = skel.astype(np.uint8)*255
         points = np.argwhere(skeleton==255)
         distance = len(points)
