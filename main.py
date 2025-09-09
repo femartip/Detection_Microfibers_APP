@@ -160,13 +160,12 @@ class MainWindow(QMainWindow):
         if table.rowCount() < len(IMAGES):
             table.setRowCount(len(IMAGES)+1)
         for i, (path, data) in enumerate(IMAGES.items()):
-            table.setItem(i, 0, QTableWidgetItem(str(i+1)))
+            table.setItem(i, 0, QTableWidgetItem(f"{i+1}"))
             table.setItem(i, 1, QTableWidgetItem(basename(path)))
             table.setItem(i, 2, QTableWidgetItem(array_to_str(data["Fibres_detected"])))
             table.setItem(i, 3, QTableWidgetItem(array_to_str(data["Scores"])))
             table.setItem(i, 4, QTableWidgetItem(array_to_str(data["Size"])))
             table.setItem(i, 5, QTableWidgetItem(array_to_str(data["Color"])))
-        
         print("Table updated")
 
     # IMPORT IMAGES
