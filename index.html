@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MicroFiberDetect — Detecting Microfibres in Sludge</title>
+    <meta name="description"
+        content="MicroFiberDetect is a desktop app that detects, counts and analyzes microfibres in wastewater sludge using Mask R-CNN, color clustering and length estimation." />
+    <meta property="og:title" content="MicroFiberDetect — Detecting Microfibres in Sludge" />
+    <meta property="og:description"
+        content="Desktop app for detecting and analyzing microfibres in sludge with deep learning." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#0ea5e9" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b1020;
+            --panel: #11172a;
+            --muted: #a9b4d0;
+            --text: #e6eeff;
+            --brand: #34d399;
+            --brand-2: #0ea5e9;
+            --ring: 0 0 0 3px rgba(14, 165, 233, .35);
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(1200px 700px at 80% -10%, #18213a 0%, rgba(11, 16, 32, 0) 60%),
+                radial-gradient(1000px 600px at -10% 10%, #112338 0%, rgba(11, 16, 32, 0) 50%), var(--bg);
+            color: var(--text);
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px
+        }
+
+        header.site {
+            position: sticky;
+            top: 0;
+            backdrop-filter: saturate(150%) blur(10px);
+            background: rgba(11, 16, 32, .7);
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            z-index: 50
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0
+        }
+
+        .brand {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-weight: 800;
+            letter-spacing: .3px
+        }
+
+        .logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--brand-2), #7c3aed 60%);
+            display: grid;
+            place-items: center;
+            box-shadow: 0 8px 30px rgba(14, 165, 233, .35)
+        }
+
+        .logo svg {
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .35))
+        }
+
+        .nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 22px
+        }
+
+        .nav a:hover {
+            color: #fff
+        }
+
+        .btn {
+            appearance: none;
+            border: 0;
+            border-radius: 14px;
+            padding: 12px 18px;
+            font-weight: 700;
+            letter-spacing: .2px;
+            cursor: pointer;
+            transition: .22s transform, .22s box-shadow;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .btn:focus {
+            outline: none;
+            box-shadow: var(--ring)
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--brand-2), #22d3ee);
+            color: #001018
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, .12)
+        }
+
+        .hero {
+            padding: 80px 0 40px
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 54px);
+            line-height: 1.05;
+            margin: 0 0 14px
+        }
+
+        .hero p {
+            font-size: clamp(16px, 2.2vw, 19px);
+            color: var(--muted);
+            max-width: 760px
+        }
+
+        .hero .cta {
+            margin-top: 26px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
+            border: 1px solid rgba(255, 255, 255, .08);
+            box-shadow: 0 20px 60px rgba(2, 8, 23, .5);
+            border-radius: 22px
+        }
+
+        .showcase {
+            margin: 34px 0 0;
+            padding: 18px
+        }
+
+        .grid {
+            display: grid;
+            gap: 18px
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr))
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr))
+        }
+
+        .img {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, .06);
+            background: rgba(255, 255, 255, .02)
+        }
+
+        .img img {
+            display: block;
+            width: 100%;
+            height: 220px;
+            object-fit: cover
+        }
+
+        .kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .14);
+            color: var(--muted);
+            font-size: 12px;
+            letter-spacing: .3px;
+            text-transform: uppercase
+        }
+
+        section {
+            padding: 64px 0
+        }
+
+        h2 {
+            font-size: 28px;
+            margin: 0 0 16px
+        }
+
+        .muted {
+            color: var(--muted)
+        }
+
+        .code {
+            font-family: "JetBrains Mono", monospace;
+            background: #0a1224;
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 14px;
+            padding: 16px;
+            overflow: auto
+        }
+
+        .list {
+            display: grid;
+            gap: 10px
+        }
+
+        .feature {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, .02)
+        }
+
+        .feature svg {
+            flex: 0 0 auto;
+            margin-top: 2px
+        }
+
+        .pill {
+            font-size: 12px;
+            color: var(--muted);
+            border: 1px solid rgba(255, 255, 255, .18);
+            padding: 3px 10px;
+            border-radius: 999px
+        }
+
+        .toc a {
+            color: var(--muted);
+            text-decoration: none
+        }
+
+        .toc a:hover {
+            color: #fff
+        }
+
+        .cards {
+            display: grid;
+            gap: 18px
+        }
+
+        .cards.cols-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr))
+        }
+
+        .cards .card {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 18px;
+            padding: 18px
+        }
+
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        footer {
+            padding: 50px 0;
+            color: var(--muted)
+        }
+
+        .tiny {
+            font-size: 12px
+        }
+
+        @media (max-width:900px) {
+            .grid-3 {
+                grid-template-columns: 1fr
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr
+            }
+
+            .cards.cols-3 {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header / Nav -->
+    <header class="site">
+        <div class="container nav">
+            <div class="brand">
+                <div class="logo" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12c3-6 13-6 16 0-3 6-13 6-16 0Z" fill="white" />
+                    </svg>
+                </div>
+                <span>MicroFiberDetect</span>
+            </div>
+            <nav>
+                <a href="#features">Features</a>
+                <a href="#install">Install</a>
+                <a href="#usage">Usage</a>
+                <a href="#paper">Paper</a>
+                <a href="#contributing">Contribute</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <span class="kicker">Micro Fiber Detection in Sludge</span>
+            <h1>Detect, count & analyze microfibres in wastewater sludge — fast.</h1>
+            <p>MicroFiberDetect is a desktop application powered by deep learning (Mask R‑CNN) that detects microfibres
+                in microscope images, estimates their length via skeletonization, and derives dominant colour using
+                clustering. Built for environmental researchers and lab practitioners.</p>
+            <div class="cta">
+                <a class="btn btn-primary"
+                    href="https://drive.google.com/file/d/10oMat7ValwrEglhZC1f1nt1y8SrFx-be/view?usp=sharing"
+                    target="_blank" rel="noopener">⬇ Download for Windows</a>
+                <a class="btn btn-ghost" href="#install">⚙️ Install from Source</a>
+                <a class="btn btn-ghost" href="#toc">📚 Table of Contents</a>
+            </div>
+            <div class="panel showcase">
+                <div class="grid grid-3">
+                    <figure class="img"><img src="images/sample1.jpg" alt="Detected fibres with bounding boxes">
+                    </figure>
+                    <figure class="img"><img src="images/sample2.jpg" alt="Colour clustering result"></figure>
+                    <figure class="img"><img src="images/sample3.jpg" alt="Length estimation via skeletonization">
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Table of contents -->
+    <section id="toc">
+        <div class="container">
+            <h2>Table of Contents</h2>
+            <div class="toc list">
+                <a href="#overview">Project Overview</a>
+                <a href="#structure">Repository Structure</a>
+                <a href="#install">Installation</a>
+                <a href="#usage">Usage</a>
+                <a href="#features">Features</a>
+                <a href="#contributing">Contributing</a>
+                <a href="#license">License</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview -->
+    <section id="overview">
+        <div class="container grid grid-2">
+            <div>
+                <h2>Project Description</h2>
+                <p class="muted">This project contains an application designed to detect microfibres in sludge. It uses
+                    a fine‑tuned Mask R‑CNN for instance segmentation, k‑means clustering in HSL space for colour
+                    estimation, and skeletonized masks for length measurement.</p>
+                <div class="badges" aria-label="tech">
+                    <span class="pill">Python</span>
+                    <span class="pill">PyQt6 / PySide6</span>
+                    <span class="pill">OpenCV</span>
+                    <span class="pill">Torch / Torchvision</span>
+                    <span class="pill">NumPy / scikit-image</span>
+                    <span class="pill">CUDA (optional)</span>
+                </div>
+            </div>
+            <div class="panel" style="padding:18px">
+                <h3 style="margin:0 0 10px">Quick Links</h3>
+                <ul class="muted" style="line-height:1.9">
+                    <li><a href="https://drive.google.com/file/d/10oMat7ValwrEglhZC1f1nt1y8SrFx-be/view?usp=sharing"
+                            target="_blank" rel="noopener">Windows build (ZIP)</a></li>
+                    <li><a href="#install">Install from source</a></li>
+                    <li><a href="#paper">Read the paper</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Structure -->
+    <section id="structure">
+        <div class="container">
+            <h2>Repository Structure</h2>
+            <pre class="code"><code>Utils/
+images/                # Contains all images used in the app
+models/                # TorchScript files for both CA and Glass models
+modules/               # Core code modules
+test_data/             # Sample images extracted from glass filter
+themes/                # App stylesheet
+widgets/               # Reusable UI widgets
+main.py                # App entrypoint
+main.ui                # Qt Designer UI file
+</code></pre>
+        </div>
+    </section>
+
+    <!-- Installation -->
+    <section id="install">
+        <div class="container">
+            <h2>Installation</h2>
+            <div class="cards cols-3">
+                <div class="card">
+                    <h3>Prerequisites</h3>
+                    <ul class="muted" style="line-height:1.9">
+                        <li>Python 3</li>
+                        <li>OpenCV</li>
+                        <li>PySide6 / PyQt6</li>
+                        <li>pyinstaller (for building executables)</li>
+                        <li>torch &amp; torchvision</li>
+                        <li>numpy</li>
+                        <li>scikit-image</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Run from Source</h3>
+                    <ol class="muted" style="line-height:1.9">
+                        <li>Install prerequisites (e.g., <span class="code" style="padding:2px 6px">pip install -r
+                                requirements.txt</span>).</li>
+                        <li>Launch the app with <span class="code" style="padding:2px 6px">python main.py</span>.</li>
+                    </ol>
+                    <p class="tiny muted">Note: ensure model files are present in <em>models/</em>.</p>
+                </div>
+                <div class="card">
+                    <h3>Windows Build</h3>
+                    <p class="muted">Download the packaged app:</p>
+                    <p><a class="btn btn-primary"
+                            href="https://drive.google.com/file/d/10oMat7ValwrEglhZC1f1nt1y8SrFx-be/view?usp=sharing"
+                            target="_blank" rel="noopener">Download ZIP</a></p>
+                    <p class="muted tiny">Windows Defender may warn you. Click <em>More info</em> → <em>Run anyway</em>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usage -->
+    <section id="usage">
+        <div class="container">
+            <h2>Usage</h2>
+            <div class="panel" style="padding:18px">
+                <ol class="muted" style="line-height:1.9">
+                    <li>Choose the correct model for your filter type: <strong>Glass</strong> or <strong>Cellulose
+                            Acetate (CA)</strong>.</li>
+                    <li>Set the scale to match your microscope magnification.</li>
+                    <li>Load images or a folder of samples; processing progress is displayed.</li>
+                    <li>Review per‑image results: fibre count, confidence, colour and length (μm).</li>
+                    <li>Export the results table to CSV and save images with overlayed bounding boxes.</li>
+                </ol>
+            </div>
+            <div class="grid grid-3" style="margin-top:18px">
+                <figure class="img"><img src="images/usage_1.jpg" alt="Home and model selection"></figure>
+                <figure class="img"><img src="images/usage_2.jpg" alt="Processing with progress bar"></figure>
+                <figure class="img"><img src="images/usage_3.jpg" alt="Tabular results export"></figure>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+        <div class="container">
+            <h2>Features</h2>
+            <div class="grid grid-2">
+                <div>
+                    <h3>✔ Implemented</h3>
+                    <div class="list">
+                        <div class="feature">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#34d399"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M20.285 6.708l-11.4 11.4L3.715 13.94l1.414-1.414 3.756 3.756 9.986-9.986 1.414 1.414z" />
+                            </svg>
+                            <div>Windows build</div>
+                        </div>
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#34d399">
+                                <path
+                                    d="M20.285 6.708l-11.4 11.4L3.715 13.94l1.414-1.414 3.756 3.756 9.986-9.986 1.414 1.414z" />
+                            </svg>
+                            <div>CA &amp; Glass filter detection models</div>
+                        </div>
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#34d399">
+                                <path
+                                    d="M20.285 6.708l-11.4 11.4L3.715 13.94l1.414-1.414 3.756 3.756 9.986-9.986 1.414 1.414z" />
+                            </svg>
+                            <div>Image processing pipeline</div>
+                        </div>
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#34d399">
+                                <path
+                                    d="M20.285 6.708l-11.4 11.4L3.715 13.94l1.414-1.414 3.756 3.756 9.986-9.986 1.414 1.414z" />
+                            </svg>
+                            <div>Progress bar for batch processing</div>
+                        </div>
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#34d399">
+                                <path
+                                    d="M20.285 6.708l-11.4 11.4L3.715 13.94l1.414-1.414 3.756 3.756 9.986-9.986 1.414 1.414z" />
+                            </svg>
+                            <div>Overlay bounding boxes on detected fibres</div>
+                        </div>
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#34d399">
+                                <path
+                                    d="M20.285 6.708l-11.4 11.4L3.715 13.94l1.414-1.414 3.756 3.756 9.986-9.986 1.414 1.414z" />
+                            </svg>
+                            <div>Total &amp; per‑image fibre count</div>
+                        </div>
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#34d399">
+                                <path
+                                    d="M20.285 6.708l-11.4 11.4L3.715 13.94l1.414-1.414 3.756 3.756 9.986-9.986 1.414 1.414z" />
+                            </svg>
+                            <div>Length measurement at defined scale</div>
+                        </div>
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#34d399">
+                                <path
+                                    d="M20.285 6.708l-11.4 11.4L3.715 13.94l1.414-1.414 3.756 3.756 9.986-9.986 1.414 1.414z" />
+                            </svg>
+                            <div>Dominant colour via K‑means clustering</div>
+                        </div>
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#34d399">
+                                <path
+                                    d="M20.285 6.708l-11.4 11.4L3.715 13.94l1.414-1.414 3.756 3.756 9.986-9.986 1.414 1.414z" />
+                            </svg>
+                            <div>Export table data (CSV) &amp; images with overlays</div>
+                        </div>
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#34d399">
+                                <path
+                                    d="M20.285 6.708l-11.4 11.4L3.715 13.94l1.414-1.414 3.756 3.756 9.986-9.986 1.414 1.414z" />
+                            </svg>
+                            <div>Home page explanation of app</div>
+                        </div>
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#34d399">
+                                <path
+                                    d="M20.285 6.708l-11.4 11.4L3.715 13.94l1.414-1.414 3.756 3.756 9.986-9.986 1.414 1.414z" />
+                            </svg>
+                            <div>CUDA support</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3>❌ Planned</h3>
+                    <div class="list">
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#ef4444"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18.3 5.71L5.7 18.3M5.7 5.7l12.6 12.6" stroke="#ef4444" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <div>Linux build</div>
+                        </div>
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#ef4444"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18.3 5.71L5.7 18.3M5.7 5.7l12.6 12.6" stroke="#ef4444" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <div>Mac build</div>
+                        </div>
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#ef4444"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18.3 5.71L5.7 18.3M5.7 5.7l12.6 12.6" stroke="#ef4444" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <div>Export images at original resolution</div>
+                        </div>
+                        <div class="feature"><svg width="20" height="20" viewBox="0 0 24 24" fill="#ef4444"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18.3 5.71L5.7 18.3M5.7 5.7l12.6 12.6" stroke="#ef4444" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <div>Toggle segmentation / bounding boxes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Paper / Citation -->
+    <section id="paper">
+        <div class="container">
+            <h2>Paper</h2>
+            <p class="muted">Learn about the datasets (Glass &amp; CA), model training, colour extraction, and length
+                estimation in the accompanying paper.</p>
+            <div class="panel"
+                style="padding:18px;display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap">
+                <div>
+                    <strong>MicroFiberDetect: An Application for the Detection of Microfibres in Wastewater Sludge based
+                        on CNNs</strong>
+                    <div class="tiny muted">Felix Marti‑Perez, Ana Domínguez‑Rodríguez, Cèsar Ferri, Carlos Monserrat —
+                        2025</div>
+                </div>
+                <div>
+                    <a class="btn btn-primary" href="paper/MicroFiberDetect.pdf" target="_blank" rel="noopener">📄 Read
+                        PDF</a>
+                    <a class="btn btn-ghost" href="#overview">Back to Overview</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contributing -->
+    <section id="contributing">
+        <div class="container">
+            <h2>Contributing</h2>
+            <p class="muted">If you'd like to contribute, please fork the repository and use a feature branch. Pull
+                requests are warmly welcome.</p>
+        </div>
+    </section>
+
+    <!-- License -->
+    <section id="license">
+        <div class="container">
+            <h2>License</h2>
+            <div class="panel" style="padding:18px">
+                <pre class="code"><code>MIT License
+
+Copyright (c) 2024 Felix Marti Perez
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container"
+            style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div class="tiny">© 2024–2025 Felix Marti Perez • MicroFiberDetect</div>
+            <div class="tiny">Built with ❤️ for environmental research</div>
+        </div>
+    </footer>
+</body>
+
+</html>
