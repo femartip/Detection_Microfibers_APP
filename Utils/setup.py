@@ -14,7 +14,7 @@ if system == "linux":
         '--windowed',
         '-i=../images/icon.ico',
     ])
-    #pyinstaller main.py --distpath ./linux_build/dist --workpath ./linux_build/build --noconfirm --specpath ./linux_build --name Detector_fibras --add-data ../modules/*.py:./modules/ --add-data ../models/model.ts:. --collect-all torch --collect-all torchvision --collect-all numpy --collect-all opencv-python
+    #pyinstaller main.py --distpath ./linux_build/dist --workpath ./linux_build/build --noconfirm --specpath ./linux_build --name Detector_fibras --add-data ../modules/*.py:./modules/ --add-data ../models/*:./models --collect-all torch --collect-all torchvision --collect-all numpy --collect-all opencv-python
 elif system == 'win32':
     PyInstaller.__main__.run([
         'main.py',

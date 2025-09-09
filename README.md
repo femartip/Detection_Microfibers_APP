@@ -21,8 +21,9 @@ Structure:
 1. Installation
 2. Usage
 3. Features
-4. Contributing
-5. License
+4. Availability
+5. Contributing
+6. License
 
 ## Installation
 
@@ -83,6 +84,14 @@ Note that Windows Defender may block the application from running. To run the ap
 - Mac build
 - Export images at original resolution
 - Make segmentation and bounding box toggleable
+
+## Availability
+
+Both datasets used to train the models are available on HuggingFace.
+
+https://huggingface.co/datasets/femartip/microfibres_CA_filter
+
+https://huggingface.co/datasets/femartip/microfibres_Glass_filter
 
 ## Contributing
 
