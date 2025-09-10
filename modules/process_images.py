@@ -192,7 +192,7 @@ class ProcessingImagesWindow(Load_Window):
     # MASKS
     ############################################################################################
     # Function that builds the mask from the masks and bounding boxes
-    def buld_mask(self, masks, boxes):
+    def build_mask(self, masks, boxes):
         image_mask = np.zeros((IMAGE_SIZE[1],IMAGE_SIZE[0]), dtype=np.uint8)
         for i,mask in enumerate(masks):
             image_mask[int(boxes[i][1]):int(boxes[i][3]), int(boxes[i][0]):int(boxes[i][2])] = mask
@@ -305,13 +305,14 @@ class ProcessingImagesWindow(Load_Window):
             #color = extract_color(data, roi)   #previous color extraction method
             #color = self.extract_color_kmeans(data, roi)
             color = self.get_primary_color_name(data, roi)
-            colors.append(color)
-            sizes.append(round(ms, 1))
+            colors.append(f"{i+1}: {color}")
+            sizes.append(f"{i+1}: {round(ms, 1)}")
             cv2.rectangle(data, (int(bbox[i][0]), int(bbox[i][1])), (int(bbox[i][2]), int(bbox[i][3])), (0, 255, 0), 2)
-        
-        mask = self.buld_mask(masks,bbox)
+            cv2.putText(data, f"{i+1}", (int(bbox[i][0]), int(bbox[i][1]) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-        scores = [round(score, 2) for score in scores]
+        mask = self.build_mask(masks,bbox)
+
+        scores = [f"{i+1}: {round(score, 2)}" for i, score in enumerate(scores)]
 
         print("Image processed in: {} seconds".format(time.time()-start))
 

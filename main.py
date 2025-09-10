@@ -1,9 +1,19 @@
 import sys
 import os
+import os
+os.environ.setdefault("KMP_AFFINITY", "disabled")
+os.environ.setdefault("KMP_WARNINGS", "0")
+os.environ.setdefault("KMP_HW_SUBSET", "1T")
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
+os.environ.setdefault("MKL_NUM_THREADS", "1")
+os.environ.setdefault("NUMEXPR_NUM_THREADS", "1")
 from os.path import basename
 import csv
 
 from PySide6 import QtCore
+
+
 
 
 # IMPORT / GUI AND MODULES AND WIDGETS
